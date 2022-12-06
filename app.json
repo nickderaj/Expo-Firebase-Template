@@ -1,0 +1,42 @@
+{
+    "expo": {
+        "name": "Expo Template",
+        "slug": "expo-template",
+        "scheme": "com.expotemplate",
+        "owner": "nickderaj",
+        "version": "0.0.1",
+        "orientation": "portrait",
+        "icon": "./assets/images/app/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/images/app/splash.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#171717"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.expotemplate",
+            "usesAppleSignIn": true
+        },
+        "android": {
+            "icon": "./assets/images/app/icon.png",
+            "package": "com.expotemplate",
+            "versionCode": 1
+        },
+        "web": {
+            "favicon": "./assets/images/app/icon.png"
+        },
+        "androidNavigationBar": {
+            "backgroundColor": "#171717"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "2b7d47ec-3fcb-4b7d-a52d-0c33a3997dab"
+            }
+        }
+    }
+}

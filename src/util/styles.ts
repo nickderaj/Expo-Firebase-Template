@@ -1,3 +1,8 @@
+import { Dimensions } from 'react-native'
+
+export const deviceHeight = Dimensions.get('window').height
+export const deviceWidth = Dimensions.get('window').width
+
 export const colors: { [idx: string]: string } = {
   neutral50: '#fafafa',
   neutral100: '#f5f5f5',
@@ -9,4 +14,4 @@ export const colors: { [idx: string]: string } = {
   neutral700: '#404040',
   neutral800: '#262626',
   neutral900: '#171717',
-};
+}

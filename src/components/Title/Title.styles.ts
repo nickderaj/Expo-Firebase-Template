@@ -1,4 +1,4 @@
-import { colors } from '@/constants/style.constants'
+import { colors } from '@/util/styles'
 
 export const styles = {
   title: {

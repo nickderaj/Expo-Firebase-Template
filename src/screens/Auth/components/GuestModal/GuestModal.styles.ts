@@ -49,10 +49,31 @@ export const styles = StyleSheet.create({
     color: colors.neutral800,
     textAlign: 'center',
   },
+  activityIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
 
 export const containerFade = (value: Animated.Value) =>
   value.interpolate({
     inputRange: [0, 1],
     outputRange: [20, 0],
+  })
+
+export const loadingFadeIn = (value: Animated.Value) =>
+  value.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  })
+
+export const loadingFadeOut = (value: Animated.Value) =>
+  value.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0.3],
   })

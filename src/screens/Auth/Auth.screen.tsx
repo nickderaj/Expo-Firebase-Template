@@ -82,7 +82,6 @@ const AuthScreen: React.FC = () => {
           setShow={setShowGuest}
           guestLogin={() => handleLogin(LoginEnum.GUEST)}
           isLoading={isLoading}
-          setIsLoading={setIsLoading}
         />
       )}
     </ImageBackground>

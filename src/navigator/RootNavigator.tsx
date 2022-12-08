@@ -17,7 +17,7 @@ const RootNavigator: React.FC<RootNavigatorProps> = () => {
     return unsubscribe
   }, [])
 
-  return userObj?.uid ? (
+  return userObj?.id ? (
     <Navigator screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
       <Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     </Navigator>

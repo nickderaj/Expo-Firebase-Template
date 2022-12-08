@@ -14,7 +14,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['tsconfig.functions.json', 'tsconfig.dev.json'],
+    project: ['tsconfig.json', './functions/tsconfig.dev.json'],
     sourceType: 'module',
     ecmaVersion: 2018,
     tsconfigRootDir: __dirname,
@@ -31,5 +31,6 @@ module.exports = {
     'max-len': ['error', { code: 130 }],
     '@typescript-eslint/ban-ts-comment': 0,
     '@typescript-eslint/no-var-requires': 0,
+    'arrow-parens': 0,
   },
 };

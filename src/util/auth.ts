@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/config'
 import { LoginEnum } from '@/models/Auth'
-import { clearAuth, setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
+import { clearAuth, setEmail, setLoginMethod, setName, setToken } from '@/redux/slices/authSlice'
 import { setUser } from '@/redux/slices/userSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -16,15 +16,22 @@ import {
 } from 'firebase/auth'
 import React, { SetStateAction } from 'react'
 import { Alert, Platform } from 'react-native'
+import { login } from 'src/api/auth.api'
 import { logEvent } from './helpers'
 
 export const authListener = (dispatch: Dispatch) =>
   auth.onAuthStateChanged(async user => {
     try {
       if (!user) return
-      dispatch(setUser({ uid: user.uid }))
+
+      const loginMethod = (await AsyncStorage.getItem('loginMethod')) as LoginEnum
+      const res = await login(user.uid, loginMethod || LoginEnum.GOOGLE)
+      const { token, userObj } = res.data
+
+      dispatch(setUser(userObj))
+      dispatch(setToken(token))
     } catch (error) {
-      console.log(error)
+      console.log('Auth Error: ', error)
     } finally {
       hideAsync()
     }
@@ -36,7 +43,7 @@ export const logOut = async (dispatch: Dispatch) => {
     dispatch(clearAuth()) // clear redux state
     await signOut(auth) // sign out of firebase
   } catch (error) {
-    console.log(error)
+    console.log('Log Out Error: ', error)
   }
 }
 
@@ -67,7 +74,7 @@ export const googleLogin = async (
     logEvent('login', { name: res.user.displayName, email: res.user.email, method: 'google' })
   } catch (error) {
     Alert.alert('Error', 'Failed to log in, please try again later.')
-    console.log(error)
+    console.log('Google Login Error: ', error)
   } finally {
     setIsLoading(undefined)
   }
@@ -112,7 +119,7 @@ export const handleAppleLogin = async (
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     Alert.alert('Error', 'Failed to log in, please try again later.')
-    console.log(error)
+    console.log('Apple Login Error: ', error)
   } finally {
     setIsLoading(undefined)
   }

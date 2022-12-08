@@ -8,9 +8,3 @@ type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] exte
 
 export type Range<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;
 // example: Range<1,6> means 1 | 2 | 3 | 4 | 5
-
-export const removeFromArray = (array: any[], value: any) => {
-  const index = array.indexOf(value);
-  if (index > -1) array.splice(index, 1);
-  return array;
-};

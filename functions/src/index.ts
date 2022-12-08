@@ -1,7 +1,12 @@
-import { initFunction } from './util/initFunctions';
+import { initFunction, isCalled } from '@/util/initFunctions';
+import * as admin from 'firebase-admin';
 
-// Test
-initFunction('helloWorld');
+const serviceAccount = require('../service.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
-// Auth
-initFunction('login');
+const functionNames = ['login'];
+functionNames.forEach((fn: string) => {
+  if (isCalled(fn)) exports[fn] = initFunction(fn);
+});

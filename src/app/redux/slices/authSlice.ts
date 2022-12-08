@@ -4,6 +4,7 @@ import { IAuthState } from '../redux.types'
 
 const initialState: IAuthState = {
   loginMethod: undefined,
+  token: '',
   email: '',
   name: '',
 }
@@ -15,6 +16,9 @@ export const authSlice = createSlice({
     setLoginMethod: (state, action: PayloadAction<LoginEnum>) => {
       state.loginMethod = action.payload
     },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload
+    },
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload
     },
@@ -25,5 +29,5 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setLoginMethod, setEmail, setName, clearAuth } = authSlice.actions
+export const { setLoginMethod, setToken, setEmail, setName, clearAuth } = authSlice.actions
 export default authSlice.reducer

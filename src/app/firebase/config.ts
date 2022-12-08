@@ -21,6 +21,6 @@ if (!getApps().length) {
 
 const db = getFirestore(app)
 const functions = getFunctions(app, __DEV__ ? 'us-central1' : 'asia-southeast1')
-if (__DEV__) connectFunctionsEmulator(functions, 'localhost', 5001) // local functions
+if (__DEV__) connectFunctionsEmulator(functions, '192.168.1.160', 5001) // local functions
 
 export { auth, db, functions }

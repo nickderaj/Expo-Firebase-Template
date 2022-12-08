@@ -7,7 +7,15 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "skipLibCheck": true,
+    "paths": {
+      "@/constants/*": ["./src/constants/*"],
+      "@/functions/*": ["./src/functions/*"],
+      "@/helpers/*": ["./src/helpers/*"],
+      "@/models/*": ["./src/models/*"],
+      "@/util/*": ["./src/util/*"]
+    }
   },
   "compileOnSave": true,
   "include": ["src"],

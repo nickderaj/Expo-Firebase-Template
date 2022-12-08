@@ -10,7 +10,7 @@ export enum StatusEnum {
 // Generics
 export type HttpResponse = {
   status: StatusEnum.OK | StatusEnum.CREATED;
-  data?: object | string;
+  data?: any;
 };
 
 export type HttpErrorResponse = {

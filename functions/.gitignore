@@ -11,3 +11,7 @@ node_modules/
 # Logs
 firebase-debug.log
 ui-debug.log
+
+# Service files
+src/service.json
+src/service-stg.json

@@ -1,6 +1,6 @@
 import { StatusEnum } from '../models/Firebase';
 
-export const handleError = (error: unknown) => {
+export const handleError = (error: unknown): { status: StatusEnum.ERROR; error: string } => {
   console.log('Error: ', error);
 
   let message = 'Something went wrong';

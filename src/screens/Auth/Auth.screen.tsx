@@ -1,8 +1,11 @@
 import { LoginEnum, loginMap } from '@/models/Auth'
 import AuthButton from '@/screens/Auth/components/AuthButton'
+import { googleAuth, googleLogin, handleAppleLogin, handleGuestLogin } from '@/util/auth'
 import { animateVal } from '@/util/helpers'
+import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
 import { Animated, ImageBackground, ImageSourcePropType } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { backgroundFade, imageFade, menuFade, styles } from './Auth.styles'
 import GuestButton from './components/GuestButton'
 import GuestModal from './components/GuestModal'
@@ -11,6 +14,7 @@ const AuthScreen: React.FC = () => {
   const overlayOpacity = useRef(new Animated.Value(0)).current
   const [isLoading, setIsLoading] = useState<LoginEnum>()
   const [showGuest, setShowGuest] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   const imageMap: { [idx in Exclude<LoginEnum, LoginEnum.GUEST>]: ImageSourcePropType } = {
     [LoginEnum.APPLE]: require('@/images/auth/login_apple.png'),
@@ -19,17 +23,21 @@ const AuthScreen: React.FC = () => {
 
   const handleLogin = (method: LoginEnum) => {
     setIsLoading(method)
-    setTimeout(() => setIsLoading(undefined), 2000)
-  }
-
-  const handleGuestLogin = () => {
-    setIsLoading(LoginEnum.GUEST)
-    setTimeout(() => setIsLoading(undefined), 2000)
+    if (method === LoginEnum.GOOGLE) handleGoogleLogin()
+    if (method === LoginEnum.APPLE) handleAppleLogin(dispatch, setIsLoading)
+    if (method === LoginEnum.GUEST) handleGuestLogin(dispatch, setIsLoading)
   }
 
   useEffect(() => {
     animateVal(overlayOpacity, 1, 1000, false)
   }, [])
+
+  // Google Login
+  const [_googleReq, googleRes, handleGoogleLogin] = useIdTokenAuthRequest(googleAuth)
+  useEffect(() => {
+    if (googleRes?.type === 'success') googleLogin(dispatch, googleRes, setIsLoading)
+    if (googleRes?.type !== 'success') setIsLoading(undefined)
+  }, [googleRes])
 
   return (
     <ImageBackground
@@ -72,7 +80,7 @@ const AuthScreen: React.FC = () => {
         <GuestModal
           show={showGuest}
           setShow={setShowGuest}
-          guestLogin={handleGuestLogin}
+          guestLogin={() => handleLogin(LoginEnum.GUEST)}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />

@@ -1,5 +1,5 @@
 import { colors, deviceWidth } from '@/util/styles'
-import { StyleSheet } from 'react-native'
+import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   container: {
@@ -39,3 +39,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
+
+export const loadingFade = (value: Animated.Value) =>
+  value.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  })
+
+export const textFade = (value: Animated.Value) =>
+  value.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0.2],
+  })

@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/config'
 import { LoginEnum } from '@/models/Auth'
-import { setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
+import { clearAuth, setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
 import { setUser } from '@/redux/slices/userSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -12,6 +12,7 @@ import {
   OAuthProvider,
   signInAnonymously,
   signInWithCredential,
+  signOut,
 } from 'firebase/auth'
 import React, { SetStateAction } from 'react'
 import { Alert, Platform } from 'react-native'
@@ -22,13 +23,22 @@ export const authListener = (dispatch: Dispatch) =>
     try {
       if (!user) return
       dispatch(setUser({ uid: user.uid }))
-      console.log('logged in!')
     } catch (error) {
       console.log(error)
     } finally {
       hideAsync()
     }
   })
+
+export const logOut = async (dispatch: Dispatch) => {
+  try {
+    await AsyncStorage.clear() // clear local storage
+    dispatch(clearAuth()) // clear redux state
+    await signOut(auth) // sign out of firebase
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export const googleAuth = {
   clientId: 'INSERT_GOOGLE_CLIENT_ID',
@@ -42,7 +52,7 @@ export const googleLogin = async (
   setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
 ) => {
   try {
-    logEvent('kv_login_tap', { method: 'google' })
+    logEvent('login_tap', { method: 'google' })
     dispatch(setLoginMethod(LoginEnum.GOOGLE))
     AsyncStorage.setItem('loginMethod', LoginEnum.GOOGLE)
 
@@ -54,7 +64,7 @@ export const googleLogin = async (
     dispatch(setEmail(res.user.email || ''))
     dispatch(setName(res.user.displayName || ''))
 
-    logEvent('kv_login', { name: res.user.displayName, email: res.user.email, method: 'google' })
+    logEvent('login', { name: res.user.displayName, email: res.user.email, method: 'google' })
   } catch (error) {
     Alert.alert('Error', 'Failed to log in, please try again later.')
     console.log(error)
@@ -68,7 +78,7 @@ export const handleAppleLogin = async (
   setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
 ) => {
   try {
-    logEvent('kv_login_tap', { method: 'apple' })
+    logEvent('login_tap', { method: 'apple' })
     if (Platform.OS !== 'ios') throw new Error('Not on iOS')
 
     const state = Math.random().toString(36).substring(2, 15)
@@ -98,7 +108,7 @@ export const handleAppleLogin = async (
     const res = await signInWithCredential(auth, credential)
     dispatch(setEmail(res.user.email || ''))
     dispatch(setName(res.user.displayName || ''))
-    logEvent('kv_login', { name: res.user.displayName, email: res.user.email, method: 'apple' })
+    logEvent('login', { name: res.user.displayName, email: res.user.email, method: 'apple' })
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     Alert.alert('Error', 'Failed to log in, please try again later.')
@@ -113,7 +123,7 @@ export const handleGuestLogin = async (
   setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
 ) => {
   try {
-    logEvent('kv_login_tap', {
+    logEvent('login_tap', {
       method: 'guest',
     })
 
@@ -123,7 +133,7 @@ export const handleGuestLogin = async (
     const res = await signInAnonymously(auth)
     dispatch(setEmail(res.user.email || ''))
     dispatch(setName(res.user.displayName || ''))
-    logEvent('kv_login', { name: 'guest', email: 'guest', method: 'guest' })
+    logEvent('login', { name: 'guest', email: 'guest', method: 'guest' })
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     console.error(error)

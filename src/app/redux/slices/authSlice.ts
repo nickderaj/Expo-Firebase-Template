@@ -21,9 +21,9 @@ export const authSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload
     },
-    logout: state => Object.assign(state, initialState),
+    clearAuth: state => Object.assign(state, initialState),
   },
 })
 
-export const { setLoginMethod, setEmail, setName, logout } = authSlice.actions
+export const { setLoginMethod, setEmail, setName, clearAuth } = authSlice.actions
 export default authSlice.reducer

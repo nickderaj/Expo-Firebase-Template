@@ -9,5 +9,5 @@ export const animateVal = (
 
 export const logEvent = async (name: string, data: object = {}) => {
   const dataToTrack = Object.assign({ device: Platform.OS, app: 'Komo Valley' }, data)
-  if (__DEV__) return console.log('Development Log: ', name, dataToTrack)
+  if (__DEV__) return console.log('logEvent:', name, dataToTrack)
 }

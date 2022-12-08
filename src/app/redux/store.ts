@@ -16,7 +16,7 @@ export const combinedReducer = combineReducers({
 const setupStore = (preloadedState?: PreloadedState<RootState>) =>
   configureStore({ reducer: combinedReducer, preloadedState })
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-  if (action.type === 'auth/logout') state = {} as RootState
+  if (action.type === 'auth/clearAuth') state = {} as RootState
   return combinedReducer(state, action)
 }
 

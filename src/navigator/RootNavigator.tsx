@@ -18,7 +18,11 @@ const RootNavigator: React.FC<RootNavigatorProps> = () => {
   }, [])
 
   return userObj?.id ? (
-    <Navigator screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+    <Navigator
+      screenOptions={{
+        ...TransitionPresets.SlideFromRightIOS,
+        cardStyle: { backgroundColor: '#171717' },
+      }}>
       <Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     </Navigator>
   ) : (

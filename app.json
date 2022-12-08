@@ -7,7 +7,8 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/app/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#171717",
     "splash": {
       "image": "./assets/images/app/splash.png",
       "resizeMode": "cover",

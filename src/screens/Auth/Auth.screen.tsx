@@ -1,7 +1,7 @@
 import { LoginEnum, loginMap } from '@/models/Auth'
 import AuthButton from '@/screens/Auth/components/AuthButton'
 import { googleAuth, googleLogin, handleAppleLogin, handleGuestLogin } from '@/util/auth'
-import { animateVal } from '@/util/helpers'
+import { animateVal, loadAssetsAsync } from '@/util/helpers'
 import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
 import { Animated, ImageBackground, ImageSourcePropType } from 'react-native'
@@ -17,15 +17,16 @@ const AuthScreen: React.FC = () => {
   const dispatch = useDispatch()
 
   const imageMap: { [idx in Exclude<LoginEnum, LoginEnum.GUEST>]: ImageSourcePropType } = {
-    [LoginEnum.APPLE]: require('@/images/auth/login_apple.png'),
-    [LoginEnum.GOOGLE]: require('@/images/auth/login_google.png'),
+    [LoginEnum.APPLE]: require('@/images/icons/auth/login_apple.png'),
+    [LoginEnum.GOOGLE]: require('@/images/icons/auth/login_google.png'),
   }
 
-  const handleLogin = (method: LoginEnum) => {
+  const handleLogin = async (method: LoginEnum) => {
     setIsLoading(method)
-    if (method === LoginEnum.GOOGLE) handleGoogleLogin()
-    if (method === LoginEnum.APPLE) handleAppleLogin(dispatch, setIsLoading)
-    if (method === LoginEnum.GUEST) handleGuestLogin(dispatch, setIsLoading)
+    await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
+    if (method === LoginEnum.GOOGLE) await handleGoogleLogin()
+    if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch, setIsLoading)
+    if (method === LoginEnum.GUEST) await handleGuestLogin(dispatch, setIsLoading)
   }
 
   useEffect(() => {

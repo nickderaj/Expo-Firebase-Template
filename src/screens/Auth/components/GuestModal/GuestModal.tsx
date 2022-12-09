@@ -60,7 +60,7 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
               <Pressable
-                onPress={guestLogin}
+                onPress={async () => await guestLogin()}
                 style={styles.button}
                 disabled={isLoading !== undefined}>
                 <Text style={{ ...styles.buttonText }}>Continue</Text>

@@ -33,7 +33,7 @@ export const authListener = (dispatch: Dispatch) =>
     } catch (error) {
       console.log('Auth Error: ', error)
     } finally {
-      hideAsync()
+      setTimeout(() => hideAsync(), 200)
     }
   })
 

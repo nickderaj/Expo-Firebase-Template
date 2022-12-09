@@ -1,38 +1,25 @@
-import Title from '@/components/Title'
-import { logOut } from '@/util/auth'
-import { animateVal, loadAssetsAsync } from '@/util/helpers'
+import { animateVal } from '@/util/helpers'
 import { useEffect, useRef } from 'react'
-import { Animated, ImageBackground, Pressable, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDispatch } from 'react-redux'
+import { Animated, Image, ImageBackground, Pressable } from 'react-native'
 import { styles } from './Home.styles'
 import { HomeScreenProps } from './Home.types'
 
-const HomeScreen: React.FC<HomeScreenProps> = () => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const opacity = useRef(new Animated.Value(0.4)).current
-  const dispatch = useDispatch()
 
   useEffect(() => {
     animateVal(opacity, 1, 1000)
   }, [])
 
-  const handleLogout = async () => {
-    await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
-    logOut(dispatch)
-  }
-
   return (
     <Animated.View style={{ ...styles.container, opacity }}>
       <ImageBackground
-        style={{ width: '100%', height: '100%' }}
+        style={styles.container}
         resizeMode="cover"
         source={require('@/images/app/splash.png')}>
-        <SafeAreaView>
-          <Title>Home Screen</Title>
-          <Pressable onPress={handleLogout}>
-            <Text>Logout</Text>
-          </Pressable>
-        </SafeAreaView>
+        <Pressable onPress={() => navigation.navigate('Profile')} style={styles.catWrapper}>
+          <Image source={require('@/images/characters/cat.gif')} style={styles.cat} />
+        </Pressable>
       </ImageBackground>
     </Animated.View>
   )

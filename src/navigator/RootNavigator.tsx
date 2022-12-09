@@ -1,6 +1,7 @@
 import { RootState } from '@/redux/store'
 import AuthScreen from '@/screens/Auth'
 import HomeScreen from '@/screens/Home'
+import ProfileScreen from '@/screens/Profile'
 import { authListener } from '@/util/auth'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import { useEffect } from 'react'
@@ -22,8 +23,10 @@ const RootNavigator: React.FC<RootNavigatorProps> = () => {
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,
         cardStyle: { backgroundColor: '#171717' },
+        headerShown: false,
       }}>
-      <Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Screen name="Home" component={HomeScreen} />
+      <Screen name="Profile" component={ProfileScreen} />
     </Navigator>
   ) : (
     <AuthScreen />

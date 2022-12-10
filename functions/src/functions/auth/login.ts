@@ -1,4 +1,4 @@
-import { handleError } from '@/helpers/index';
+import { handleError } from '@/helpers/helpers';
 import { loginFunction } from '@/models/Auth';
 import { StatusEnum } from '@/models/Firebase';
 import { IUser } from '@/models/User';

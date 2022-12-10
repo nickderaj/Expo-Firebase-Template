@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginTop: 2,
-    fontFamily: 'Radiance',
+    fontFamily: 'AbaddonBold',
     fontSize: 16,
     marginHorizontal: 4,
     color: colors.neutral100,

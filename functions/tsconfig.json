@@ -12,9 +12,8 @@
     "paths": {
       "@/constants/*": ["./src/constants/*"],
       "@/functions/*": ["./src/functions/*"],
-      "@/helpers/*": ["./src/helpers/*"],
       "@/models/*": ["./src/models/*"],
-      "@/util/*": ["./src/util/*"]
+      "@/helpers/*": ["./src/helpers/*"]
     }
   },
   "compileOnSave": true,

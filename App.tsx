@@ -21,7 +21,7 @@ const theme = {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ Radiance: require('./assets/fonts/radiance.ttf') })
+  const [fontsLoaded] = useFonts({ AbaddonBold: require('./assets/fonts/abaddon_bold.ttf') })
 
   if (!fontsLoaded) return null
   return (

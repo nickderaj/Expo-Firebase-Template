@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginTop: 2,
-    fontFamily: 'Radiance',
+    fontFamily: 'AbaddonBold',
     fontSize: 20,
     color: colors.neutral900,
     marginHorizontal: 4,

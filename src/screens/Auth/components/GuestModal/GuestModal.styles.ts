@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     maxWidth: deviceWidth * 0.8,
   },
   text: {
-    fontFamily: 'Radiance',
+    fontFamily: 'AbaddonBold',
     fontSize: 16,
     color: colors.neutral800,
     marginVertical: 12,
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.neutral200,
   },
   buttonText: {
-    fontFamily: 'Radiance',
+    fontFamily: 'AbaddonBold',
     fontSize: 16,
     color: colors.neutral800,
     textAlign: 'center',

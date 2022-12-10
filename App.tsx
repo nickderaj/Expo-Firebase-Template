@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout'
 import RootNavigator from '@/navigator/RootNavigator'
 import { store } from '@/redux/store'
 import { colors } from '@/util/styles'
@@ -26,9 +27,11 @@ export default function App() {
   if (!fontsLoaded) return null
   return (
     <Provider store={store}>
-      <NavigationContainer theme={theme}>
-        <RootNavigator />
-      </NavigationContainer>
+      <Layout>
+        <NavigationContainer theme={theme}>
+          <RootNavigator />
+        </NavigationContainer>
+      </Layout>
     </Provider>
   )
 }

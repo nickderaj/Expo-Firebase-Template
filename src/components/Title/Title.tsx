@@ -1,8 +1,9 @@
 import { Text } from 'react-native'
 import { styles } from './Title.styles'
 
-const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return <Text style={styles.title}>{children}</Text>
+type Props = { children: React.ReactNode }
+const Title: React.FC<Props> = ({ children }) => {
+  return <Text style={styles.title}>{children}</Text>
 }
 
 export default Title

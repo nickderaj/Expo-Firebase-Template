@@ -12,6 +12,7 @@ const updateExpoToken: updateExpoFunction = async (admin, data) => {
       const userRef = db.doc(`users/${uid}`);
       const privateRef = userRef.collection('user_data').doc('user_private');
 
+      // 1. If the user rejects notification permissions
       if (!expoToken) {
         transaction.set(privateRef, { notifications: false }, { merge: true });
 
@@ -20,7 +21,8 @@ const updateExpoToken: updateExpoFunction = async (admin, data) => {
           data: { message: 'notifications rejected.', token: null },
         };
       }
-      // Update expo token
+
+      // 2. Update expo token if permission accepted
       transaction.set(privateRef, { expoToken, notifications: true }, { merge: true });
 
       return {

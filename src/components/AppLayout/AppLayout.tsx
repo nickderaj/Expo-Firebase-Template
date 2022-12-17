@@ -1,30 +1,35 @@
+import { RootState } from '@/redux/store'
 import { authListener } from '@/util/auth'
-import { notificationClickListener, receivedNotificationListener } from '@/util/notifications'
-import { Subscription } from 'expo-apple-authentication'
-import { removeNotificationSubscription } from 'expo-notifications'
-import { useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { clickNotificationListener, receivedNotificationListener } from '@/util/notifications'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 type Props = {
   children: React.ReactNode
 }
 
 const AppLayout: React.FC<Props> = ({ children }) => {
-  const notiListener = useRef<Subscription | undefined>()
-  const clickListener = useRef<Subscription | undefined>()
+  const { userObj } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = authListener(dispatch)
-    notiListener.current = receivedNotificationListener
-    clickListener.current = notificationClickListener
 
     return () => {
       unsubscribe()
-      if (notiListener?.current) removeNotificationSubscription(notiListener.current)
-      if (clickListener?.current) removeNotificationSubscription(clickListener.current)
     }
   }, [])
+
+  useEffect(() => {
+    if (!userObj?.id) return
+    const clickSubscription = clickNotificationListener(userObj.id)
+    const recSubscription = receivedNotificationListener(userObj.id)
+
+    return () => {
+      clickSubscription.remove()
+      recSubscription.remove()
+    }
+  }, [userObj?.id])
 
   return <>{children}</>
 }

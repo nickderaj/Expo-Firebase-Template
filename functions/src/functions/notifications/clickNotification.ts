@@ -12,7 +12,7 @@ const clickNotification: clickNotiFunction = async (admin, data) => {
       // Store notification
       const userRef = db.doc(`users/${uid}`);
       const createdTime = admin.firestore.FieldValue.serverTimestamp();
-      const notificationRef = userRef.collection('notifications').doc(notificationObj.id);
+      const notificationRef = userRef.collection('notifications').doc();
       transaction.set(notificationRef, {
         ...notificationObj,
         created_at: createdTime,

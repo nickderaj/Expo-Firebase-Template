@@ -17,14 +17,13 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 
   const handleLogout = async () => {
     setLoggingOut(true)
+    logEvent('logout', { user: userObj?.id })
     await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
     await logOut(dispatch)
     setLoggingOut(false)
   }
 
-  const handleBack = () => {
-    navigation.replace('Home')
-  }
+  const handleBack = () => navigation.replace('Home')
 
   useEffect(() => {
     logEvent('view_profile')

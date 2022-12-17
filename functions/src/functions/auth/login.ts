@@ -14,7 +14,7 @@ const login: loginFunction = async (admin, data, context) => {
     const userObj: IUser = {
       id: uid,
       username: `${randomFromArray(nameArray)}_${uid.substring(0, 5)}`,
-      loginMethod,
+      login_method: loginMethod,
       created_at: new Date(),
     };
 

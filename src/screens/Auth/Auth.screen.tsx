@@ -12,6 +12,7 @@ import GuestModal from './components/GuestModal'
 
 const AuthScreen: React.FC = () => {
   const overlayOpacity = useRef(new Animated.Value(0)).current
+  const screenOpacity = useRef(new Animated.Value(0)).current
   const [isLoading, setIsLoading] = useState<LoginEnum>()
   const [showGuest, setShowGuest] = useState<boolean>(false)
   const dispatch = useDispatch()
@@ -31,6 +32,7 @@ const AuthScreen: React.FC = () => {
   }
 
   useEffect(() => {
+    animateVal(screenOpacity, 1, 1000, false)
     animateVal(overlayOpacity, 1, 1000, false)
   }, [])
 
@@ -51,15 +53,15 @@ const AuthScreen: React.FC = () => {
           source={require('@/images/app/logo.png')}
           style={{
             ...styles.logo,
-            opacity: overlayOpacity,
-            transform: [{ translateY: imageFade(overlayOpacity) }],
+            opacity: screenOpacity,
+            transform: [{ translateY: imageFade(screenOpacity) }],
           }}
           resizeMode="contain"
         />
         <Animated.View
           style={{
-            opacity: overlayOpacity,
-            transform: [{ translateY: menuFade(overlayOpacity) }],
+            opacity: screenOpacity,
+            transform: [{ translateY: menuFade(screenOpacity) }],
           }}>
           {loginMap.map(loginMethod => (
             <AuthButton

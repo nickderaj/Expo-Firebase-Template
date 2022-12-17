@@ -1,7 +1,7 @@
 import { FirebaseFunction, HttpErrorResponse, StatusEnum } from './Firebase';
 
 // clickNotification //
-export type clickNotiReq = { uid: string; notificationObj?: { id: string } };
+export type clickNotiReq = { uid: string; notificationObj?: { identifier: string } };
 export type clickNotiRes = { status: StatusEnum.OK };
 export type clickNotiFunction = (
   admin: Parameters<FirebaseFunction>[0],

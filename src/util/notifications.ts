@@ -5,11 +5,14 @@ import {
   AndroidImportance,
   getExpoPushTokenAsync,
   getPermissionsAsync,
+  Notification,
+  NotificationResponse,
   requestPermissionsAsync,
   setNotificationChannelAsync,
 } from 'expo-notifications'
 import { Platform } from 'react-native'
-import { updateExpoToken } from 'src/api/notification.api'
+import { clickNotification, updateExpoToken } from 'src/api/notification.api'
+import { logEvent } from './helpers'
 
 export const registerForPNS = async (uid: string) => {
   try {
@@ -43,10 +46,25 @@ export const registerForPNS = async (uid: string) => {
   }
 }
 
-export const receivedNotificationListener = addNotificationReceivedListener(notification => {
-  console.log('notification', notification)
-})
+export const receivedNotificationListener = (uid: string) =>
+  addNotificationReceivedListener((notification: Notification) => {
+    logEvent('notification_click_received', {
+      user: uid,
+      notification: {
+        title: notification.request.content.title,
+        body: notification.request.content.body,
+      },
+    })
+  })
 
-export const notificationClickListener = addNotificationResponseReceivedListener(response => {
-  console.log('clicked notification', response)
-})
+export const clickNotificationListener = (uid: string) =>
+  addNotificationResponseReceivedListener((response: NotificationResponse) => {
+    logEvent('notification_click', {
+      user: uid,
+      notification: {
+        title: response.notification.request.content.title,
+        body: response.notification.request.content.body,
+      },
+    })
+    clickNotification(uid, response.notification.request)
+  })

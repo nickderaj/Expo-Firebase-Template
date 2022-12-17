@@ -7,6 +7,7 @@ export enum StatusEnum {
   SERVER_ERROR = 500,
 }
 
+export type FirebaseDate = { _nanoseconds: number; _seconds: number };
 export type Transaction = FirebaseFirestore.Transaction;
 export type Admin = typeof import('firebase-admin');
 

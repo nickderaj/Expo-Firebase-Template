@@ -7,10 +7,10 @@ export enum FriendEnum {
   BLOCKED = 'blocked',
 }
 
-// sendFriendRequest //
+// friendRequest //
 export type friendRequestReq = { uid: string; friendId: string };
 export type friendRequestRes = {
-  status: StatusEnum.OK;
+  status: StatusEnum.OK | StatusEnum.CREATED;
   data: {
     message:
       | 'Request already pending.'

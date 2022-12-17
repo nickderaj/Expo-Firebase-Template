@@ -1,3 +1,3 @@
-import sendFriendRequest from './sendFriendRequest';
+import friendRequest from './friendRequest';
 
-export default { sendFriendRequest };
+export default { friendRequest };

@@ -1,9 +1,9 @@
 import { handleError, userExists } from '@/helpers/helpers';
 import { StatusEnum } from '@/models/Firebase';
 import { FriendEnum, friendRequestFunction } from '@/models/Friends';
-import { addToFriendList } from './common/friendHelpers';
+import { addFriend } from './util/addFriend';
 
-const sendFriendRequest: friendRequestFunction = async (admin, data, context) => {
+const friendRequest: friendRequestFunction = async (admin, data, context) => {
   try {
     const { uid, friendId } = data; // add email to userObj
     if (!uid || !friendId) throw new Error('Required params: uid, friendId');
@@ -46,13 +46,9 @@ const sendFriendRequest: friendRequestFunction = async (admin, data, context) =>
 
       // 3. Check if friend send a request to user already - then add as friends
       if (pending.exists) {
-        // 4a. Log friend's request as accepted
-        const existingLog = db.doc(`users/${friendId}/user_data/logs/friend_log/${uid}`);
-        transaction.set(existingLog, { status: FriendEnum.ACCEPTED }, { merge: true });
-
-        return addToFriendList(uid, friendId, admin, transaction, pendingRef);
+        return addFriend(uid, friendId, admin, transaction, pendingRef);
       } else {
-        // 4b. Log new request
+        // 4. Log new request
         transaction.set(logRef, {
           friend_id: friendId,
           status: FriendEnum.PENDING,
@@ -69,7 +65,7 @@ const sendFriendRequest: friendRequestFunction = async (admin, data, context) =>
       });
 
       return {
-        status: StatusEnum.OK,
+        status: StatusEnum.CREATED,
         data: {
           message: 'Friend request sent!',
         },
@@ -80,4 +76,4 @@ const sendFriendRequest: friendRequestFunction = async (admin, data, context) =>
   }
 };
 
-export default sendFriendRequest;
+export default friendRequest;

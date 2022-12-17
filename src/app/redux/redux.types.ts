@@ -3,7 +3,6 @@ import { IUser } from '@/models/User'
 
 export interface IAuthState {
   loginMethod?: LoginEnum
-  token: string
   email: string
   name: string
 }

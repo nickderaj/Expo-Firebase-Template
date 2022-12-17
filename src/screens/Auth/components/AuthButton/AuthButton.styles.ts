@@ -1,33 +1,27 @@
-import { colors, deviceWidth } from '@/util/styles'
+import { colors } from '@/util/styles'
 import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    minWidth: deviceWidth * 0.6,
-    maxWidth: deviceWidth * 0.8,
-    display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: colors.neutral100,
+    borderRadius: 8,
+    paddingHorizontal: 24,
     marginVertical: 8,
-    position: 'relative',
   },
   image: {
+    marginVertical: 12,
+    marginHorizontal: 8,
     width: 20,
     height: 20,
     resizeMode: 'contain',
-    marginHorizontal: 4,
   },
   text: {
-    textAlign: 'center',
-    marginTop: 2,
-    fontFamily: 'AbaddonBold',
-    fontSize: 20,
+    fontFamily: 'M5X7',
+    fontSize: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
     color: colors.neutral900,
-    marginHorizontal: 4,
   },
   activityIndicator: {
     position: 'absolute',

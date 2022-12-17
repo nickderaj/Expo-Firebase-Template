@@ -9,7 +9,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
+const AppLayout: React.FC<Props> = ({ children }) => {
   const notiListener = useRef<Subscription | undefined>()
   const clickListener = useRef<Subscription | undefined>()
   const dispatch = useDispatch()
@@ -20,13 +20,13 @@ const Layout: React.FC<Props> = ({ children }) => {
     clickListener.current = notificationClickListener
 
     return () => {
+      unsubscribe()
       if (notiListener?.current) removeNotificationSubscription(notiListener.current)
       if (clickListener?.current) removeNotificationSubscription(clickListener.current)
-      unsubscribe()
     }
   }, [])
 
   return <>{children}</>
 }
 
-export default Layout
+export default AppLayout

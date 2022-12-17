@@ -14,7 +14,7 @@ export const loginMap = removeFromArray(Object.values(LoginEnum), LoginEnum.GUES
 >[];
 
 // login //
-export type loginReq = { uid: string; userObj: IUser; expoToken?: string };
+export type loginReq = { uid: string; loginMethod: LoginEnum; expoToken?: string };
 export type loginRes = {
   status: StatusEnum.OK;
   data: { userObj: IUser };

@@ -14,7 +14,7 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
     const tokens: { to: string; title: string; body: string }[] = [];
     await Promise.all(
       users.map(async user => {
-        if (!userExists(admin, user)) return;
+        if (!(await userExists(admin, user))) return;
 
         // Get expo token
         const userDocRef = db.doc(`users/${user}`);

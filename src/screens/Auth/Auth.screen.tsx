@@ -25,8 +25,9 @@ const AuthScreen: React.FC = () => {
     setIsLoading(method)
     await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
     if (method === LoginEnum.GOOGLE) await handleGoogleLogin()
-    if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch, setIsLoading)
-    if (method === LoginEnum.GUEST) await handleGuestLogin(dispatch, setIsLoading)
+    if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch)
+    if (method === LoginEnum.GUEST) await handleGuestLogin(dispatch)
+    setIsLoading(undefined)
   }
 
   useEffect(() => {
@@ -36,8 +37,7 @@ const AuthScreen: React.FC = () => {
   // Google Login
   const [_googleReq, googleRes, handleGoogleLogin] = useIdTokenAuthRequest(googleAuth)
   useEffect(() => {
-    if (googleRes?.type === 'success') googleLogin(dispatch, googleRes, setIsLoading)
-    if (googleRes?.type !== 'success') setIsLoading(undefined)
+    if (googleRes?.type === 'success') googleLogin(dispatch, googleRes)
   }, [googleRes])
 
   return (

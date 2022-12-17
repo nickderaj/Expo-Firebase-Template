@@ -1,5 +1,26 @@
 import { Admin, StatusEnum } from '@/models/Firebase';
 
+// Firebase Helpers
+export const handleError = (error: unknown): { status: StatusEnum.ERROR; error: string } => {
+  console.log('Error: ', error);
+
+  let message = 'Something went wrong';
+  if (error instanceof Error) message = error.message;
+
+  return {
+    status: StatusEnum.ERROR,
+    error: message,
+  };
+};
+
+export const userExists = async (admin: Admin, uid: string) => {
+  const userRef = admin.firestore().doc(`users/${uid}`);
+  const user = await userRef.get();
+  if (!user.exists) return false;
+  return true;
+};
+
+// Misc. Helpers
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
   { [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>> }[Keys];
 // example: RequireAtLeastOne<{ id: string, click?: number, component?: string }, 'click' | 'component'>;
@@ -26,21 +47,8 @@ export const splitArray = (arr: any[], chunkSize: number) => {
   return tempArr;
 };
 
-export const handleError = (error: unknown): { status: StatusEnum.ERROR; error: string } => {
-  console.log('Error: ', error);
+export const randomFromArray = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
 
-  let message = 'Something went wrong';
-  if (error instanceof Error) message = error.message;
-
-  return {
-    status: StatusEnum.ERROR,
-    error: message,
-  };
-};
-
-export const userExists = async (admin: Admin, uid: string) => {
-  const userRef = admin.firestore().doc(`users/${uid}`);
-  const user = await userRef.get();
-  if (!user.exists) return false;
-  return true;
+export const getRandomNum = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
 };

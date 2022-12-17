@@ -1,4 +1,4 @@
-import Layout from '@/components/Layout'
+import AppLayout from '@/components/AppLayout'
 import RootNavigator from '@/navigator/RootNavigator'
 import { store } from '@/redux/store'
 import { colors } from '@/util/styles'
@@ -22,16 +22,16 @@ const theme = {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ AbaddonBold: require('./assets/fonts/abaddon_bold.ttf') })
+  const [fontsLoaded] = useFonts({ M5X7: require('./assets/fonts/Habbo.ttf') })
 
   if (!fontsLoaded) return null
   return (
     <Provider store={store}>
-      <Layout>
+      <AppLayout>
         <NavigationContainer theme={theme}>
           <RootNavigator />
         </NavigationContainer>
-      </Layout>
+      </AppLayout>
     </Provider>
   )
 }

@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/config'
 import { LoginEnum } from '@/models/Auth'
-import { clearAuth, setEmail, setLoginMethod, setName, setToken } from '@/redux/slices/authSlice'
+import { clearAuth, setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
 import { setUser } from '@/redux/slices/userSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -14,7 +14,6 @@ import {
   signInWithCredential,
   signOut,
 } from 'firebase/auth'
-import React, { SetStateAction } from 'react'
 import { Alert, Platform } from 'react-native'
 import { login } from 'src/api/auth.api'
 import { logEvent } from './helpers'
@@ -26,10 +25,9 @@ export const authListener = (dispatch: Dispatch) =>
 
       const loginMethod = (await AsyncStorage.getItem('loginMethod')) as LoginEnum
       const res = await login(user.uid, loginMethod || LoginEnum.GOOGLE)
-      const { token, userObj } = res.data
+      const { userObj } = res.data
 
       dispatch(setUser(userObj))
-      dispatch(setToken(token))
     } catch (error) {
       console.log('Auth Error: ', error)
     } finally {
@@ -53,11 +51,7 @@ export const googleAuth = {
   androidClientId: 'INSERT_ANDROID_CLIENT_ID',
 }
 
-export const googleLogin = async (
-  dispatch: Dispatch,
-  googleRes: any,
-  setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
-) => {
+export const googleLogin = async (dispatch: Dispatch, googleRes: any) => {
   try {
     logEvent('login_tap', { method: 'google' })
     dispatch(setLoginMethod(LoginEnum.GOOGLE))
@@ -75,15 +69,10 @@ export const googleLogin = async (
   } catch (error) {
     Alert.alert('Error', 'Failed to log in, please try again later.')
     console.log('Google Login Error: ', error)
-  } finally {
-    setIsLoading(undefined)
   }
 }
 
-export const handleAppleLogin = async (
-  dispatch: Dispatch,
-  setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
-) => {
+export const handleAppleLogin = async (dispatch: Dispatch) => {
   try {
     logEvent('login_tap', { method: 'apple' })
     if (Platform.OS !== 'ios') throw new Error('Not on iOS')
@@ -120,15 +109,10 @@ export const handleAppleLogin = async (
     if (error?.code === 'ERR_CANCELED') return
     Alert.alert('Error', 'Failed to log in, please try again later.')
     console.log('Apple Login Error: ', error)
-  } finally {
-    setIsLoading(undefined)
   }
 }
 
-export const handleGuestLogin = async (
-  dispatch: Dispatch,
-  setIsLoading: React.Dispatch<SetStateAction<LoginEnum | undefined>>,
-) => {
+export const handleGuestLogin = async (dispatch: Dispatch) => {
   try {
     logEvent('login_tap', {
       method: 'guest',
@@ -144,7 +128,5 @@ export const handleGuestLogin = async (
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     console.error(error)
-  } finally {
-    setIsLoading(undefined)
   }
 }

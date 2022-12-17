@@ -1,5 +1,5 @@
 export const projectName = 'komo_valley';
-
+export const projectRegion = 'asia-southeast1';
 export const firebaseConfig = {
   apiKey: 'AIzaSyDBVXOQ6krA2Tz2znTi7w_4rIWq6LP6UoE',
   authDomain: 'testprojectnick.firebaseapp.com',

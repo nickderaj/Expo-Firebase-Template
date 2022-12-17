@@ -4,9 +4,7 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 8,
-    paddingVertical: 8,
     borderRadius: 8,
-    display: 'flex',
     alignItems: 'center',
     marginVertical: 8,
     position: 'absolute',
@@ -15,8 +13,9 @@ export const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginTop: 2,
-    fontFamily: 'AbaddonBold',
-    fontSize: 16,
+    paddingVertical: 8,
+    fontFamily: 'M5X7',
+    fontSize: 24,
     marginHorizontal: 4,
     color: colors.neutral100,
   },

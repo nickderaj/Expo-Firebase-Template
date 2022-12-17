@@ -5,7 +5,7 @@ const updateExpoToken: updateExpoFunction = async (admin, data) => {
   // Check for params
   const { uid, expoToken } = data;
   if (!uid) throw new Error('User id is required');
-  if (!userExists(admin, uid)) throw new Error('Profile not found');
+  if (!(await userExists(admin, uid))) throw new Error('Profile not found');
   const db = admin.firestore();
 
   try {

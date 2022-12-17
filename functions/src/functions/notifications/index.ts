@@ -3,4 +3,4 @@ import queueNotification from './queueNotification';
 import sendQueuedNotifications from './sendQueuedNotifications';
 import updateExpoToken from './updateExpoToken';
 
-export { clickNotification, queueNotification, sendQueuedNotifications, updateExpoToken };
+export default { clickNotification, queueNotification, sendQueuedNotifications, updateExpoToken };

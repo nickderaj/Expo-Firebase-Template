@@ -1,4 +1,4 @@
-import { firebaseConfig } from '@/constants/firebase.constants'
+import { firebaseConfig, projectRegion } from '@/constants/firebase.constants'
 import { getFirestore } from '@firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getApp, getApps, initializeApp } from 'firebase/app'
@@ -20,7 +20,7 @@ if (!getApps().length) {
 }
 
 const db = getFirestore(app)
-const functions = getFunctions(app, __DEV__ ? 'us-central1' : 'asia-southeast1')
+const functions = getFunctions(app, __DEV__ ? 'us-central1' : projectRegion)
 if (__DEV__) connectFunctionsEmulator(functions, '192.168.1.160', 5001) // local functions
 
 export { auth, db, functions }

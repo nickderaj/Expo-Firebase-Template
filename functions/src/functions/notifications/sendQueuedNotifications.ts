@@ -7,7 +7,7 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
   const db = admin.firestore();
 
   try {
-    // Fetch all users to send notification to
+    // 1. Fetch all users to send notification to
     const dateNow = new Date();
     const notificationRef = db.collection('notifications').doc(projectName);
     const users = await notificationRef
@@ -16,7 +16,7 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
       .where('sent', '==', false)
       .get();
 
-    // Extract uid, title & body
+    // 2. Extract uid, title & body and group users
     type notification = { id: string; title: string; body: string };
     const ungroupedNotifications: notification[] = [];
     users.forEach(user => {
@@ -34,7 +34,8 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
       }, {});
 
     const groupedNotifications: notification[][] = Object.values(groupBy(ungroupedNotifications));
-    // Send notifications
+
+    // 3. Send notifications
     await Promise.all(
       groupedNotifications.map(async (group, idx) => {
         const userIds = group.map(a => a.id);
@@ -46,7 +47,7 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
       }),
     );
 
-    // Mark users as sent: true & log in sent notifications collection
+    // 4. Mark users as sent: true & log in sent notifications collection
     await Promise.all(
       ungroupedNotifications.map(async user => {
         notificationRef.collection('pending').doc(user.id).update({
@@ -60,6 +61,7 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
         });
       }),
     );
+
     return {
       status: 200,
     };

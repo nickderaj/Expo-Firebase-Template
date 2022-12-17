@@ -9,7 +9,7 @@ const queueNotification: queueNotiFunction = async (admin, data) => {
       if (!uid || !sendDate || !title || !body) {
         throw new Error('uid, sendDate, title & body are required');
       }
-      if (!userExists(admin, uid)) throw new Error('Profile not found.');
+      if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
       const db = admin.firestore();
 
       // Queue notification

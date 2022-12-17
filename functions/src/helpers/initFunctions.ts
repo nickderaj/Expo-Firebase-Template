@@ -1,11 +1,6 @@
-import { login } from '@/functions/auth';
-import {
-  clickNotification,
-  queueNotification,
-  sendQueuedNotifications,
-  updateExpoToken,
-} from '@/functions/notifications';
-
+import { projectRegion } from '@/constants/firebase.constants';
+import auth from '@/functions/auth';
+import notifications from '@/functions/notifications';
 import { FirebaseFunction } from '@/models/firebase';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
@@ -18,7 +13,7 @@ export const isCalled = (name: string) =>
 export const initFunction = (name: string) => httpsCall(functionMap[name]);
 export const scheduleFunction = (name: string, schedule: string) => {
   return functions
-    .region('asia-southeast1')
+    .region(projectRegion)
     .pubsub.schedule(schedule) // in utc time
     .timeZone('UTC')
     .onRun(() => {
@@ -27,9 +22,9 @@ export const scheduleFunction = (name: string, schedule: string) => {
 };
 
 const functionMap: { [idx: string]: FirebaseFunction } = {
-  login,
-  clickNotification,
-  queueNotification,
-  sendQueuedNotifications,
-  updateExpoToken,
+  login: auth.login,
+  clickNotification: notifications.clickNotification,
+  queueNotification: notifications.queueNotification,
+  sendQueuedNotifications: notifications.sendQueuedNotifications,
+  updateExpoToken: notifications.updateExpoToken,
 };

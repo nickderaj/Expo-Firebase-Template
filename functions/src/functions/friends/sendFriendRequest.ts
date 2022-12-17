@@ -15,16 +15,15 @@ const sendFriendRequest: friendRequestFunction = async (admin, data, context) =>
 
     return await db.runTransaction(async transaction => {
       const userRef = db.doc(`users/${uid}`);
-      const dataRef = userRef.collection('user_data');
-      const logRef = dataRef.doc('logs').collection('friend_log');
+      const logRef = userRef
+        .collection('user_data')
+        .doc('logs')
+        .collection('friend_log')
+        .doc(friendId);
 
       // 1. Check if a request has already been sent
-      const existingLog = logRef
-        .where('friend_id', '==', friendId)
-        .orderBy('created_at', 'desc')
-        .limit(1);
-      const logs = await transaction.get(existingLog);
-      if (!logs.empty && logs.docs[0].data().status === 'pending') {
+      const logs = await transaction.get(logRef);
+      if (logs.data()?.status === 'pending') {
         return {
           status: StatusEnum.OK,
           data: { message: 'Request already pending.' },
@@ -41,22 +40,24 @@ const sendFriendRequest: friendRequestFunction = async (admin, data, context) =>
         };
       }
 
-      // 3. Log new request
-      const timeNow = admin.firestore.FieldValue.serverTimestamp();
-
-      const newLogRef = logRef.doc();
-      transaction.set(newLogRef, {
-        friend_id: friendId,
-        status: FriendEnum.PENDING,
-        created_at: timeNow,
-      });
-
-      // 4. Check if friend send a request to user already - then add as friends
-
       const pendingRef = db.doc(`users/${uid}/friend_requests/${friendId}`);
       const pending = await transaction.get(pendingRef);
+      const timeNow = admin.firestore.FieldValue.serverTimestamp();
+
+      // 3. Check if friend send a request to user already - then add as friends
       if (pending.exists) {
+        // 4a. Log friend's request as accepted
+        const existingLog = db.doc(`users/${friendId}/user_data/logs/friend_log/${uid}`);
+        transaction.set(existingLog, { status: FriendEnum.ACCEPTED }, { merge: true });
+
         return addToFriendList(uid, friendId, admin, transaction, pendingRef);
+      } else {
+        // 4b. Log new request
+        transaction.set(logRef, {
+          friend_id: friendId,
+          status: FriendEnum.PENDING,
+          created_at: timeNow,
+        });
       }
 
       // 5. Send request

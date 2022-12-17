@@ -1,21 +1,20 @@
-import { handleError } from '@/helpers/helpers';
+import { handleError, userExists } from '@/helpers/helpers';
 import { updateExpoFunction } from '@/models/Notifications';
 
 const updateExpoToken: updateExpoFunction = async (admin, data) => {
   // Check for params
   const { uid, expoToken } = data;
   if (!uid) throw new Error('User id is required');
+  if (!userExists(admin, uid)) throw new Error('Profile not found');
   const db = admin.firestore();
 
   try {
     return await db.runTransaction(async transaction => {
-      // Check if user exists
-      const userDocRef = db.doc(`users/${uid}`);
-      const userDocSnap = await transaction.get(userDocRef);
-      const petDocRef = db.doc(`users/${uid}/pet/pet_data`);
-      if (!userDocSnap.data()) throw new Error('Profile not found');
+      const userRef = db.doc(`users/${uid}`);
+      const publicRef = userRef.collection('public').doc('data');
+
       if (!expoToken) {
-        transaction.set(petDocRef, { notifications: false }, { merge: true });
+        transaction.set(publicRef, { notifications: false }, { merge: true });
 
         return {
           status: 200,
@@ -23,9 +22,8 @@ const updateExpoToken: updateExpoFunction = async (admin, data) => {
         };
       }
       // Update expo token
-      const userPublicRef = userDocRef.collection('public').doc('data');
-      transaction.set(userPublicRef, { expoToken }, { merge: true });
-      transaction.set(petDocRef, { notifications: true }, { merge: true });
+      transaction.set(publicRef, { expoToken }, { merge: true });
+      transaction.set(publicRef, { notifications: true }, { merge: true });
 
       return {
         status: 200,

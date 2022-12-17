@@ -1,4 +1,4 @@
-import { handleError, splitArray } from '@/helpers/helpers';
+import { handleError, splitArray, userExists } from '@/helpers/helpers';
 import { sendNotiFunction } from '@/models/Notifications';
 
 const fetch = require('node-fetch');
@@ -6,22 +6,21 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
   try {
     // Check for params
     const { users, title, body } = data;
-    if (!users || !Array.isArray(users) || users.length === 0) {
-      throw new Error('User array, title & body are required');
+    if (!users || !Array.isArray(users) || users.length === 0 || !title || !body) {
+      throw new Error('users array, title & body are required');
     }
+    const db = admin.firestore();
 
     const tokens: { to: string; title: string; body: string }[] = [];
     await Promise.all(
       users.map(async user => {
-        // Check if user exists
-        const userDocRef = admin.firestore().doc(`users/${user}`);
-        const userDocSnap = await userDocRef.get();
-        if (!userDocSnap.data()) return;
+        if (!userExists(admin, user)) return;
 
         // Get expo token
+        const userDocRef = db.doc(`users/${user}`);
         const userDataRef = await userDocRef.collection('public').doc('data').get();
         const userData = userDataRef.data();
-        if (!userData || !userData.expoToken) return;
+        if (!userData?.expoToken) return;
 
         // Store expo token
         tokens.push({ to: userData.expoToken, title, body });

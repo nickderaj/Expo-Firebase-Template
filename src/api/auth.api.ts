@@ -4,8 +4,6 @@ import { IUser } from '@/models/User'
 import { httpsCallable } from 'firebase/functions'
 
 export const login = async (uid: string, loginMethod: LoginEnum, expoToken?: string) => {
-  const nonce = Math.floor(Math.random() * 1000000)
-
   const userObj: IUser = {
     id: uid,
     username: `${loginMethod}_${uid.substring(0, 5)}`,
@@ -16,6 +14,6 @@ export const login = async (uid: string, loginMethod: LoginEnum, expoToken?: str
   }
 
   const fetch = httpsCallable<loginReq, loginRes>(functions, 'login')
-  const res = (await fetch({ uid, userObj, nonce, expoToken })).data
+  const res = (await fetch({ uid, userObj, expoToken })).data
   return res
 }

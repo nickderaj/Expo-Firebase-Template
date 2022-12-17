@@ -14,10 +14,10 @@ export const loginMap = removeFromArray(Object.values(LoginEnum), LoginEnum.GUES
 >[];
 
 // login //
-export type loginReq = { uid: string; userObj: IUser; nonce: number; expoToken?: string };
+export type loginReq = { uid: string; userObj: IUser; expoToken?: string };
 export type loginRes = {
   status: StatusEnum.OK;
-  data: { userObj: IUser; token: string };
+  data: { userObj: IUser };
 };
 
 export type loginFunction = (

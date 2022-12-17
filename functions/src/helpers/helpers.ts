@@ -1,4 +1,4 @@
-import { StatusEnum } from '@/models/Firebase';
+import { Admin, StatusEnum } from '@/models/Firebase';
 
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
   { [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>> }[Keys];
@@ -36,4 +36,11 @@ export const handleError = (error: unknown): { status: StatusEnum.ERROR; error: 
     status: StatusEnum.ERROR,
     error: message,
   };
+};
+
+export const userExists = async (admin: Admin, uid: string) => {
+  const userRef = admin.firestore().doc(`users/${uid}`);
+  const user = await userRef.get();
+  if (!user.exists) return false;
+  return true;
 };

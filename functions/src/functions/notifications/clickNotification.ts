@@ -1,23 +1,19 @@
-import { handleError } from '@/helpers/helpers';
+import { handleError, userExists } from '@/helpers/helpers';
 import { clickNotiFunction } from '@/models/Notifications';
 
 const clickNotification: clickNotiFunction = async (admin, data) => {
   try {
     return await admin.firestore().runTransaction(async transaction => {
-      // Check for params
       const { uid, notificationObj } = data;
-      if (!uid) throw new Error('User id is required');
-      if (!notificationObj) throw new Error('Expo Token is required');
-
-      // Check if user exists
-      const userDocRef = admin.firestore().doc(`users/${uid}`);
-      const userDocSnap = await transaction.get(userDocRef);
-      if (!userDocSnap.data()) throw new Error('Profile not found');
+      if (!uid || !notificationObj) throw new Error('uid & notificationObj are required');
+      if (!userExists(admin, uid)) throw new Error('Profile not found');
+      const db = admin.firestore();
 
       // Store notification
+      const userRef = db.doc(`users/${uid}`);
       const createdTime = admin.firestore.FieldValue.serverTimestamp();
-      const userNotificationRef = userDocRef.collection('notifications').doc(notificationObj.id);
-      transaction.set(userNotificationRef, {
+      const notificationRef = userRef.collection('notifications').doc(notificationObj.id);
+      transaction.set(notificationRef, {
         ...notificationObj,
         created_at: createdTime,
       });

@@ -7,6 +7,9 @@ export enum StatusEnum {
   SERVER_ERROR = 500,
 }
 
+export type Transaction = FirebaseFirestore.Transaction;
+export type Admin = typeof import('firebase-admin');
+
 // Generics
 export type HttpResponse = {
   status: StatusEnum.OK | StatusEnum.CREATED;
@@ -19,7 +22,7 @@ export type HttpErrorResponse = {
 };
 
 export type FirebaseFunction = (
-  admin: typeof import('firebase-admin'),
+  admin: Admin,
   data?: any,
   context?: CallableContext,
 ) => Promise<HttpResponse | HttpErrorResponse>;

@@ -1,14 +1,17 @@
+import { projectName } from '@/constants/firebase.constants';
 import { handleError } from '@/helpers/helpers';
 import { sendQueueFunction } from '@/models/Notifications';
 import sendNotification from './sendNotification';
 
 const sendQueuedNotifications: sendQueueFunction = async admin => {
+  const db = admin.firestore();
+
   try {
     // Fetch all users to send notification to
     const dateNow = new Date();
-    const users = await admin
-      .firestore()
-      .collection('mobile_announcements')
+    const notificationRef = db.collection('notifications').doc(projectName);
+    const users = await notificationRef
+      .collection('pending')
       .where('send_date', '<=', dateNow)
       .where('sent', '==', false)
       .get();
@@ -46,10 +49,10 @@ const sendQueuedNotifications: sendQueueFunction = async admin => {
     // Mark users as sent: true & log in sent notifications collection
     await Promise.all(
       ungroupedNotifications.map(async user => {
-        admin.firestore().collection('mobile_announcements').doc(user.id).update({
+        notificationRef.collection('pending').doc(user.id).update({
           sent: true,
         });
-        admin.firestore().collection('notifications').doc('sent').collection('komo_valley').add({
+        notificationRef.collection('sent').add({
           user: user.id,
           title: user.title,
           body: user.body,

@@ -1,5 +1,6 @@
 import { projectRegion } from '@/constants/firebase.constants';
 import auth from '@/functions/auth';
+import friends from '@/functions/friends';
 import notifications from '@/functions/notifications';
 import { FirebaseFunction } from '@/models/firebase';
 import * as admin from 'firebase-admin';
@@ -27,4 +28,5 @@ const functionMap: { [idx: string]: FirebaseFunction } = {
   queueNotification: notifications.queueNotification,
   sendQueuedNotifications: notifications.sendQueuedNotifications,
   updateExpoToken: notifications.updateExpoToken,
+  sendFriendRequest: friends.sendFriendRequest,
 };

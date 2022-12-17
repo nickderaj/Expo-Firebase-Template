@@ -4,9 +4,9 @@ import { sendQueueFunction } from '@/models/Notifications';
 import sendNotification from './sendNotification';
 
 const sendQueuedNotifications: sendQueueFunction = async admin => {
-  const db = admin.firestore();
-
   try {
+    const db = admin.firestore();
+
     // 1. Fetch all users to send notification to
     const dateNow = new Date();
     const notificationRef = db.collection('notifications').doc(projectName);

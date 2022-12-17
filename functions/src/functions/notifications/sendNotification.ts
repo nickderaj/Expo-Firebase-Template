@@ -1,7 +1,7 @@
 import { handleError, splitArray, userExists } from '@/helpers/helpers';
 import { sendNotiFunction } from '@/models/Notifications';
-
 const fetch = require('node-fetch');
+
 const sendNotification: sendNotiFunction = async (admin, data) => {
   try {
     // Check for params
@@ -17,9 +17,9 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
         if (!(await userExists(admin, user))) return;
 
         // Get expo token
-        const userDocRef = db.doc(`users/${user}`);
-        const userDataRef = await userDocRef.collection('public').doc('data').get();
-        const userData = userDataRef.data();
+        const dataRef = db.doc(`users/${user}`).collection('user_data');
+        const privateRef = await dataRef.doc('user_private').get();
+        const userData = privateRef.data();
         if (!userData?.expoToken) return;
 
         // Store expo token

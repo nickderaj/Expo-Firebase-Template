@@ -6,7 +6,7 @@ const clickNotification: clickNotiFunction = async (admin, data) => {
     return await admin.firestore().runTransaction(async transaction => {
       const { uid, notificationObj } = data;
       if (!uid || !notificationObj) throw new Error('uid & notificationObj are required');
-      if (!(await userExists(admin, uid))) throw new Error('Profile not found');
+      if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
       const db = admin.firestore();
 
       // Store notification

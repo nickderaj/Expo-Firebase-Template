@@ -2,19 +2,18 @@ import { handleError, userExists } from '@/helpers/helpers';
 import { updateExpoFunction } from '@/models/Notifications';
 
 const updateExpoToken: updateExpoFunction = async (admin, data) => {
-  // Check for params
-  const { uid, expoToken } = data;
-  if (!uid) throw new Error('User id is required');
-  if (!(await userExists(admin, uid))) throw new Error('Profile not found');
-  const db = admin.firestore();
-
   try {
+    const { uid, expoToken } = data;
+    if (!uid) throw new Error('uid is required');
+    if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
+    const db = admin.firestore();
+
     return await db.runTransaction(async transaction => {
       const userRef = db.doc(`users/${uid}`);
-      const publicRef = userRef.collection('public').doc('data');
+      const privateRef = userRef.collection('user_data').doc('user_private');
 
       if (!expoToken) {
-        transaction.set(publicRef, { notifications: false }, { merge: true });
+        transaction.set(privateRef, { notifications: false }, { merge: true });
 
         return {
           status: 200,
@@ -22,8 +21,7 @@ const updateExpoToken: updateExpoFunction = async (admin, data) => {
         };
       }
       // Update expo token
-      transaction.set(publicRef, { expoToken }, { merge: true });
-      transaction.set(publicRef, { notifications: true }, { merge: true });
+      transaction.set(privateRef, { expoToken, notifications: true }, { merge: true });
 
       return {
         status: 200,

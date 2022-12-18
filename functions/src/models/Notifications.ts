@@ -1,3 +1,4 @@
+import { CallableContext } from 'firebase-functions/v1/https';
 import { FirebaseFunction, HttpErrorResponse, StatusEnum } from './Firebase';
 
 // clickNotification //
@@ -6,6 +7,7 @@ export type clickNotiRes = { status: StatusEnum.OK };
 export type clickNotiFunction = (
   admin: Parameters<FirebaseFunction>[0],
   data: clickNotiReq,
+  context?: CallableContext,
 ) => Promise<clickNotiRes | HttpErrorResponse>;
 
 // queueNotification //
@@ -14,6 +16,7 @@ export type queueNotiRes = { status: StatusEnum.OK };
 export type queueNotiFunction = (
   admin: Parameters<FirebaseFunction>[0],
   data: queueNotiReq,
+  context?: CallableContext,
 ) => Promise<queueNotiRes | HttpErrorResponse>;
 
 // sendNotification //
@@ -40,4 +43,5 @@ export type updateExpoRes = {
 export type updateExpoFunction = (
   admin: Parameters<FirebaseFunction>[0],
   data: updateExpoReq,
+  context?: CallableContext,
 ) => Promise<updateExpoRes | HttpErrorResponse>;

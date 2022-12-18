@@ -1,13 +1,13 @@
-import { handleError, splitArray, userExists } from '@/helpers/helpers';
+import { checkParams, handleError, splitArray, userExists } from '@/helpers/helpers';
 import { sendNotiFunction } from '@/models/Notifications';
 const fetch = require('node-fetch');
 
 const sendNotification: sendNotiFunction = async (admin, data) => {
   try {
     const { users, title, body } = data;
-    if (!users || !Array.isArray(users) || users.length === 0 || !title || !body) {
-      throw new Error('users array, title & body are required');
-    }
+    checkParams({ users, title, body });
+    if (!Array.isArray(users) || users.length === 0) throw new Error('users array is required');
+
     const db = admin.firestore();
 
     // 1. Store expo tokens to send notifications too

@@ -25,3 +25,18 @@ export type friendRequestFunction = (
   data: friendRequestReq,
   context: Parameters<FirebaseFunction>[2],
 ) => Promise<friendRequestRes | HttpErrorResponse>;
+
+// rejectFriend //
+export type rejectFriendReq = { uid: string; friendId: string };
+export type rejectFriendRes = {
+  status: StatusEnum.OK;
+  data: {
+    message: 'Request not found.' | 'Already friends.' | 'Rejected friend request.';
+  };
+};
+
+export type rejectFriendFunction = (
+  admin: Parameters<FirebaseFunction>[0],
+  data: rejectFriendReq,
+  context: Parameters<FirebaseFunction>[2],
+) => Promise<rejectFriendRes | HttpErrorResponse>;

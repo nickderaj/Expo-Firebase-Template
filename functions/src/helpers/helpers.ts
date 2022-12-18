@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Admin, StatusEnum } from '@/models/Firebase';
+import { CallableContext } from 'firebase-functions/v1/https';
 
 // Firebase Helpers
 export const handleError = (error: unknown): { status: StatusEnum.ERROR; error: string } => {
@@ -18,6 +21,16 @@ export const userExists = async (admin: Admin, uid: string) => {
   const user = await userRef.get();
   if (!user.exists) return false;
   return true;
+};
+
+export const checkAuth = (uid: string, context?: CallableContext) => {
+  if (!context?.auth || context.auth.uid !== uid) throw new Error('User not authenticated');
+};
+
+export const checkParams = (paramObj: { [idx: string]: any }) => {
+  for (const i in paramObj) {
+    if (!paramObj[i]) throw new Error(`${i} is a required parameter.`);
+  }
 };
 
 // Misc. Helpers

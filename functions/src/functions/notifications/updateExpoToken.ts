@@ -1,10 +1,12 @@
-import { handleError, userExists } from '@/helpers/helpers';
+import { checkAuth, checkParams, handleError, userExists } from '@/helpers/helpers';
 import { updateExpoFunction } from '@/models/Notifications';
 
-const updateExpoToken: updateExpoFunction = async (admin, data) => {
+const updateExpoToken: updateExpoFunction = async (admin, data, context) => {
   try {
     const { uid, expoToken } = data;
-    if (!uid) throw new Error('uid is required');
+    checkParams({ uid });
+    checkAuth(uid, context);
+
     if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
     const db = admin.firestore();
 

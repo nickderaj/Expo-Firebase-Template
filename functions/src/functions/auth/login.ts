@@ -1,5 +1,11 @@
 import { projectName } from '@/constants/firebase.constants';
-import { handleError, randomFromArray, userExists } from '@/helpers/helpers';
+import {
+  checkAuth,
+  checkParams,
+  handleError,
+  randomFromArray,
+  userExists,
+} from '@/helpers/helpers';
 import { nameArray } from '@/helpers/nameArray';
 import { loginFunction } from '@/models/Auth';
 import { StatusEnum } from '@/models/Firebase';
@@ -8,7 +14,9 @@ import { IUser } from '@/models/User';
 const login: loginFunction = async (admin, data, context) => {
   try {
     const { uid, loginMethod, expoToken } = data; // add email to userObj
-    if (!uid || !loginMethod) throw new Error('Required params: uid, loginMethod, nonce');
+    checkParams({ uid, loginMethod });
+    checkAuth(uid, context);
+
     const db = admin.firestore();
 
     const userObj: IUser = {

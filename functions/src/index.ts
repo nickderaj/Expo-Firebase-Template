@@ -13,6 +13,7 @@ const httpFunctions = [
   'sendQueuedNotifications',
   'updateExpoToken',
   'friendRequest',
+  'rejectFriend',
 ];
 httpFunctions.forEach((fn: string) => {
   if (isCalled(fn)) exports[fn] = initFunction(fn);

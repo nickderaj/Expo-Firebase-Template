@@ -1,11 +1,13 @@
-import { handleError, userExists } from '@/helpers/helpers';
+import { checkAuth, checkParams, handleError, userExists } from '@/helpers/helpers';
 import { clickNotiFunction } from '@/models/Notifications';
 
-const clickNotification: clickNotiFunction = async (admin, data) => {
+const clickNotification: clickNotiFunction = async (admin, data, context) => {
   try {
     return await admin.firestore().runTransaction(async transaction => {
       const { uid, notificationObj } = data;
-      if (!uid || !notificationObj) throw new Error('uid & notificationObj are required');
+      checkParams({ uid, notificationObj });
+      checkAuth(uid, context);
+
       if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
       const db = admin.firestore();
 

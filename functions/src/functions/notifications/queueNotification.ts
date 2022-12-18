@@ -1,14 +1,14 @@
 import { projectName } from '@/constants/firebase.constants';
-import { handleError, userExists } from '@/helpers/helpers';
+import { checkAuth, checkParams, handleError, userExists } from '@/helpers/helpers';
 import { queueNotiFunction } from '@/models/Notifications';
 
-const queueNotification: queueNotiFunction = async (admin, data) => {
+const queueNotification: queueNotiFunction = async (admin, data, context) => {
   try {
     return await admin.firestore().runTransaction(async transaction => {
       const { uid, sendDate, title, body } = data;
-      if (!uid || !sendDate || !title || !body) {
-        throw new Error('uid, sendDate, title & body are required');
-      }
+      checkParams({ uid, sendDate, title, body });
+      checkAuth(uid, context);
+
       if (!(await userExists(admin, uid))) throw new Error('Profile not found.');
       const db = admin.firestore();
 

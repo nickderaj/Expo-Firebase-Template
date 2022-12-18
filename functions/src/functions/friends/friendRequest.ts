@@ -1,12 +1,15 @@
-import { handleError, userExists } from '@/helpers/helpers';
+import { checkAuth, checkParams, handleError, userExists } from '@/helpers/helpers';
 import { StatusEnum } from '@/models/Firebase';
 import { FriendEnum, friendRequestFunction } from '@/models/Friends';
 import { addFriend } from './util/addFriend';
+import { alreadyFriends } from './util/alreadyFriends';
 
 const friendRequest: friendRequestFunction = async (admin, data, context) => {
   try {
     const { uid, friendId } = data; // add email to userObj
-    if (!uid || !friendId) throw new Error('Required params: uid, friendId');
+    checkParams({ uid, friendId });
+    checkAuth(uid, context);
+
     if (uid === friendId) throw new Error('uid & friendId are the same.');
     const db = admin.firestore();
 
@@ -31,9 +34,7 @@ const friendRequest: friendRequestFunction = async (admin, data, context) => {
       }
 
       // 2. Check if they are already friends
-      const friendsRef = userRef.collection('friends').where('friend_id', '==', friendId);
-      const friends = await transaction.get(friendsRef);
-      if (!friends.empty && friends.docs[0].exists) {
+      if (await alreadyFriends(admin, transaction, uid, friendId)) {
         return {
           status: StatusEnum.OK,
           data: { message: 'Already friends.' },

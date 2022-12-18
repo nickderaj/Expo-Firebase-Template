@@ -30,4 +30,5 @@ const functionMap: { [idx: string]: FirebaseFunction } = {
   updateExpoToken: notifications.updateExpoToken,
   friendRequest: friends.friendRequest,
   rejectFriend: friends.rejectFriend,
+  getFriends: friends.getFriends,
 };

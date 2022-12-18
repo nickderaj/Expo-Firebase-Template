@@ -14,6 +14,7 @@ const httpFunctions = [
   'updateExpoToken',
   'friendRequest',
   'rejectFriend',
+  'getFriends',
 ];
 httpFunctions.forEach((fn: string) => {
   if (isCalled(fn)) exports[fn] = initFunction(fn);

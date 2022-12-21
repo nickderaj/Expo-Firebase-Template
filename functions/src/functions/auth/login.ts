@@ -1,4 +1,4 @@
-import { projectName } from '@/constants/firebase.constants';
+import { projectName } from '@/constants/project.constants';
 import {
   checkAuth,
   checkParams,

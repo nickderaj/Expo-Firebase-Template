@@ -1,6 +1,8 @@
+import { amplitudeApiKey } from '@/constants/project.constants'
 import { RootState } from '@/redux/store'
 import { authListener } from '@/util/auth'
 import { clickNotificationListener, receivedNotificationListener } from '@/util/notifications'
+import { init as initAmplitude } from '@amplitude/analytics-react-native'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -14,6 +16,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = authListener(dispatch)
+    initAmplitude(amplitudeApiKey)
 
     return () => {
       unsubscribe()

@@ -1,4 +1,4 @@
-import { projectRegion } from '@/constants/firebase.constants';
+import { projectRegion } from '@/constants/project.constants';
 import auth from '@/functions/auth';
 import friends from '@/functions/friends';
 import notifications from '@/functions/notifications';

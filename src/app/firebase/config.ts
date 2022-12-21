@@ -1,4 +1,4 @@
-import { firebaseConfig, projectRegion } from '@/constants/firebase.constants'
+import { firebaseConfig, projectRegion } from '@/constants/project.constants'
 import { getFirestore } from '@firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getApp, getApps, initializeApp } from 'firebase/app'

@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-react-native'
 import { Asset } from 'expo-asset'
 import { loadAsync } from 'expo-font'
 import { Animated, Platform } from 'react-native'
@@ -26,6 +27,13 @@ export const animateVal = (
 ) => Animated.timing(val, { toValue, duration, useNativeDriver }).start()
 
 export const logEvent = async (name: string, data: object = {}) => {
-  const dataToTrack = Object.assign({ device: Platform.OS, app: 'Komo Valley' }, data)
-  if (__DEV__) return console.log('logEvent:', name, dataToTrack)
+  try {
+    const dataToTrack = Object.assign({ device: Platform.OS, app: 'Komo Valley' }, data)
+    if (__DEV__) return console.log('logEvent:', name, dataToTrack)
+
+    // Amplitude Tracking
+    track(name, data)
+  } catch (error) {
+    console.log(`Error logging event: ${name}`, error)
+  }
 }

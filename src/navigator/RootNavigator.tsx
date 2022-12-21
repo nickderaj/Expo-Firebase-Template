@@ -2,9 +2,9 @@ import { RootState } from '@/redux/store'
 import AuthScreen from '@/screens/Auth'
 import HomeScreen from '@/screens/Home'
 import ProfileScreen from '@/screens/Profile'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import { useSelector } from 'react-redux'
-import { pageFade, cardStyle } from './Navigator.styles'
+import { navigatorScreenOptions } from './Navigator.styles'
 import { RootNavigatorProps, RootStackParamList } from './Navigator.types'
 
 const RootNavigator: React.FC<RootNavigatorProps> = () => {
@@ -12,12 +12,7 @@ const RootNavigator: React.FC<RootNavigatorProps> = () => {
   const { userObj } = useSelector((state: RootState) => state.user)
 
   return userObj?.id ? (
-    <Navigator
-      screenOptions={{
-        headerShown: false,
-        cardStyle,
-        cardStyleInterpolator: pageFade,
-      }}>
+    <Navigator screenOptions={navigatorScreenOptions}>
       <Screen name="Home" component={HomeScreen} />
       <Screen name="Profile" component={ProfileScreen} />
     </Navigator>

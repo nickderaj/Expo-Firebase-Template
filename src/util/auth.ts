@@ -2,6 +2,7 @@ import { auth } from '@/firebase/config'
 import { LoginEnum } from '@/models/Auth'
 import { clearAuth, setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
 import { setUser } from '@/redux/slices/userSlice'
+import { identify, Identify, reset, setUserId } from '@amplitude/analytics-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
 import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication'
@@ -27,6 +28,13 @@ export const authListener = (dispatch: Dispatch) =>
       const res = await login(user.uid, loginMethod || LoginEnum.GOOGLE)
       const { userObj } = res.data
 
+      // Amplitude
+      setUserId(user.uid)
+      const identifyObj = new Identify()
+      identifyObj.set('email', user.email || '')
+      identifyObj.set('name', user.displayName || '')
+      identify(identifyObj)
+
       dispatch(setUser(userObj))
     } catch (error) {
       console.log('Auth Error: ', error)
@@ -38,8 +46,9 @@ export const authListener = (dispatch: Dispatch) =>
 export const logOut = async (dispatch: Dispatch) => {
   try {
     await AsyncStorage.clear() // clear local storage
-    dispatch(clearAuth()) // clear redux state
     await signOut(auth) // sign out of firebase
+    dispatch(clearAuth()) // clear redux state
+    reset() // reset amplitude
   } catch (error) {
     console.log('Log Out Error: ', error)
   }

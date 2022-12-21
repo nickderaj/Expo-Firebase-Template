@@ -4,7 +4,6 @@ import { IUserState } from '../redux.types'
 
 const initialState: IUserState = {
   userObj: undefined,
-  testNum: 2,
 }
 
 export const userSlice = createSlice({
@@ -14,12 +13,9 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.userObj = action.payload
     },
-    setTestNum: (state, action: PayloadAction<number>) => {
-      state.testNum = action.payload
-    },
     clearUser: state => Object.assign(state, initialState),
   },
 })
 
-export const { setUser, setTestNum, clearUser } = userSlice.actions
+export const { setUser, clearUser } = userSlice.actions
 export default userSlice.reducer

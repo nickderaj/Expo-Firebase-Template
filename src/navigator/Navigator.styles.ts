@@ -1,8 +1,13 @@
 import { colors } from '@/util/styles'
 import { StackCardStyleInterpolator } from '@react-navigation/stack'
 
-export const pageFade: StackCardStyleInterpolator = ({ current }) => ({
+const pageFade: StackCardStyleInterpolator = ({ current }) => ({
   cardStyle: { opacity: current.progress },
 })
+const cardStyle = { backgroundColor: colors.neutral900 }
 
-export const cardStyle = { backgroundColor: colors.neutral900 }
+export const navigatorScreenOptions = {
+  headerShown: false,
+  cardStyle,
+  cardStyleInterpolator: pageFade,
+}

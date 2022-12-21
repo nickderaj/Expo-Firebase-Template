@@ -9,5 +9,4 @@ export interface IAuthState {
 
 export interface IUserState {
   userObj?: IUser
-  testNum: number
 }

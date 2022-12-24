@@ -2,28 +2,9 @@ import { colors, deviceWidth } from '@/util/styles'
 import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-  },
-  overlay: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    backgroundColor: colors.neutral100,
-    padding: 24,
-    borderRadius: 8,
-    width: deviceWidth * 0.8,
-  },
   text: {
-    fontFamily: 'M5X7',
-    fontSize: 20,
+    fontFamily: 'Regular',
+    fontSize: deviceWidth * 0.04,
     color: colors.neutral800,
     marginVertical: 24,
   },
@@ -42,8 +23,8 @@ export const styles = StyleSheet.create({
     borderColor: colors.neutral200,
   },
   buttonText: {
-    fontFamily: 'M5X7',
-    fontSize: 20,
+    fontFamily: 'Regular',
+    fontSize: deviceWidth * 0.045,
     color: colors.neutral800,
     textAlign: 'center',
   },
@@ -57,12 +38,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
-
-export const containerFade = (value: Animated.Value) =>
-  value.interpolate({
-    inputRange: [0, 1],
-    outputRange: [20, 0],
-  })
 
 export const loadingFadeIn = (value: Animated.Value) =>
   value.interpolate({

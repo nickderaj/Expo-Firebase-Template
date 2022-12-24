@@ -1,4 +1,4 @@
-import { colors } from '@/util/styles'
+import { colors, deviceWidth } from '@/util/styles'
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 2,
     paddingVertical: 8,
-    fontFamily: 'M5X7',
-    fontSize: 24,
+    fontFamily: 'Regular',
+    fontSize: deviceWidth * 0.045,
     marginHorizontal: 4,
     color: colors.neutral100,
   },

@@ -16,7 +16,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = authListener(dispatch)
-    initAmplitude(amplitudeApiKey)
+    if (!__DEV__) initAmplitude(amplitudeApiKey)
 
     return () => {
       unsubscribe()

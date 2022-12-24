@@ -1,6 +1,8 @@
+import { deviceWidth } from '@/util/styles'
+
 export const styles = {
   title: {
-    fontFamily: 'M5X7',
-    fontSize: 26,
+    fontFamily: 'Bold',
+    fontSize: deviceWidth * 0.045,
   },
 }

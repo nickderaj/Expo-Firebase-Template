@@ -3,6 +3,7 @@ import { getRandomNum } from 'functions/src/helpers/helpers'
 import React, { useEffect, useRef } from 'react'
 import { Animated, Image, View } from 'react-native'
 import ProfilePic from '../ProfilePic'
+import { mountainBgArray, mountainBgMap } from './MountainBg.constants'
 import { cloudMove, styles } from './MountainBg.styles'
 
 const MountainBg = () => {
@@ -20,41 +21,31 @@ const MountainBg = () => {
   }, [])
 
   useEffect(() => {
-    loadAssetsAsync({
-      images: [
-        require('@/images/bg/mountains/7.png'),
-        require('@/images/bg/mountains/6.png'),
-        require('@/images/bg/mountains/5.png'),
-        require('@/images/bg/mountains/4.png'),
-        require('@/images/bg/mountains/3.png'),
-        require('@/images/bg/mountains/2.png'),
-        require('@/images/bg/mountains/1.png'),
-      ],
-    })
+    loadAssetsAsync({ images: mountainBgArray })
   }, [])
 
   return (
     <View style={styles.container}>
-      <Image source={require('@/images/bg/mountains/7.png')} style={styles.image} />
+      <Image source={mountainBgMap[7]} style={styles.image} />
       <Animated.Image
-        source={require('@/images/bg/mountains/6.png')}
+        source={mountainBgMap[6]}
         style={{ ...styles.cloudLayer, left: cloudMove(cloud5) }}
       />
-      <Image source={require('@/images/bg/mountains/5.png')} style={styles.imageLayer} />
+      <Image source={mountainBgMap[5]} style={styles.imageLayer} />
       <Animated.Image
-        source={require('@/images/bg/mountains/4.png')}
+        source={mountainBgMap[4]}
         style={{ ...styles.cloudLayer, left: cloudMove(cloud1) }}
       />
       <Animated.Image
-        source={require('@/images/bg/mountains/3.png')}
+        source={mountainBgMap[3]}
         style={{ ...styles.cloudLayer, right: cloudMove(cloud2) }}
       />
       <Animated.Image
-        source={require('@/images/bg/mountains/2.png')}
+        source={mountainBgMap[2]}
         style={{ ...styles.cloudLayer, left: cloudMove(cloud3) }}
       />
       <Animated.Image
-        source={require('@/images/bg/mountains/1.png')}
+        source={mountainBgMap[1]}
         style={{ ...styles.cloudLayer, right: cloudMove(cloud4) }}
       />
       <ProfilePic />

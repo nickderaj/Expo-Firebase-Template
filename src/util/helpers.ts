@@ -1,5 +1,7 @@
+import { projectName } from '@/constants/project.constants'
 import { track } from '@amplitude/analytics-react-native'
 import { Asset } from 'expo-asset'
+import Constants from 'expo-constants'
 import { loadAsync } from 'expo-font'
 import { Animated, Platform } from 'react-native'
 
@@ -28,11 +30,14 @@ export const animateVal = (
 
 export const logEvent = async (name: string, data: object = {}) => {
   try {
-    const dataToTrack = Object.assign({ device: Platform.OS, app: 'Komo Valley' }, data)
-    if (__DEV__) return console.log('logEvent:', name, dataToTrack)
+    if (__DEV__) return console.log('logEvent:', name, Object.keys(data).length === 0 ? '' : data)
+    const dataToTrack = Object.assign(
+      { device: Platform.OS, app: projectName, version: Constants.manifest?.version },
+      data,
+    )
 
     // Amplitude Tracking
-    track(name, data)
+    track(name, dataToTrack)
   } catch (error) {
     console.log(`Error logging event: ${name}`, error)
   }

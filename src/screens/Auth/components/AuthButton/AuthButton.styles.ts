@@ -1,4 +1,4 @@
-import { colors } from '@/util/styles'
+import { colors, deviceWidth } from '@/util/styles'
 import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text: {
-    fontFamily: 'M5X7',
-    fontSize: 24,
+    fontFamily: 'Regular',
+    fontSize: deviceWidth * 0.045,
     paddingVertical: 12,
     paddingHorizontal: 8,
     color: colors.neutral900,

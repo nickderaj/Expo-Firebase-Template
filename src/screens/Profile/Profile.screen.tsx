@@ -34,7 +34,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       <MountainBg />
       <View style={styles.menuWrapper}>
         <Title variant="light" style={{ paddingTop: deviceWidth * 0.225, paddingBottom: 8 }}>
-          {userObj?.username}
+          @{userObj?.username}
         </Title>
         <View style={styles.menu}>
           <Pressable onPress={handleLogout} disabled={loggingOut}>

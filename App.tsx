@@ -22,7 +22,11 @@ const theme = {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({ M5X7: require('./assets/fonts/Habbo.ttf') })
+  const [fontsLoaded] = useFonts({
+    Thin: require('./assets/fonts/RobotoMono-Thin.ttf'),
+    Regular: require('./assets/fonts/RobotoMono-Regular.ttf'),
+    Bold: require('./assets/fonts/RobotoMono-Bold.ttf'),
+  })
 
   if (!fontsLoaded) return null
   return (

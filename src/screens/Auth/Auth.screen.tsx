@@ -24,6 +24,7 @@ const AuthScreen: React.FC = () => {
 
   const handleLogin = async (method: LoginEnum) => {
     setIsLoading(method)
+    // Load home page image
     await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
     if (method === LoginEnum.GOOGLE) await handleGoogleLogin()
     if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch)
@@ -44,7 +45,7 @@ const AuthScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      style={{ width: '100%', height: '100%' }}
+      style={styles.imageContainer}
       resizeMode="cover"
       source={require('@/images/app/splash.png')}>
       <Animated.View

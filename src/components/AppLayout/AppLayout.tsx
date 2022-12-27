@@ -5,6 +5,7 @@ import { clickNotificationListener, receivedNotificationListener } from '@/util/
 import { init as initAmplitude } from '@amplitude/analytics-react-native'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Splash from '../Splash'
 
 type Props = {
   children: React.ReactNode
@@ -34,7 +35,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     }
   }, [userObj?.id])
 
-  return <>{children}</>
+  return <Splash>{children}</Splash>
 }
 
 export default AppLayout

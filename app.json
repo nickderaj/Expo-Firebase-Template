@@ -8,11 +8,11 @@
     "orientation": "portrait",
     "icon": "./assets/images/app/icon.png",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#171717",
+    "backgroundColor": "#fafafa",
     "splash": {
       "image": "./assets/images/app/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#171717"
+      "backgroundColor": "#fafafa",
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

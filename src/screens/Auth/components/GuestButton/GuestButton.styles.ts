@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Regular',
     fontSize: deviceWidth * 0.045,
     marginHorizontal: 4,
-    color: colors.neutral100,
+    color: colors.neutral900,
   },
   activityIndicator: {
     position: 'absolute',

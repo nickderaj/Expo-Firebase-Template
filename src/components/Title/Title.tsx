@@ -9,7 +9,7 @@ const Title: React.FC<Props> = ({ children, variant, style }) => {
       case 'light':
         return colors.neutral100
       case 'orange':
-        return colors.orange100
+        return colors.primary100
       default:
         return colors.neutral800
     }

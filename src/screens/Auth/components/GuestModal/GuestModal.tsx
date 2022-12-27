@@ -41,7 +41,7 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
         <Title>Continue as Guest?</Title>
 
         <Text style={styles.text}>
-          All your progress will be <Text style={{ color: colors.orange900 }}>permanently</Text>{' '}
+          All your progress will be <Text style={{ color: colors.primary900 }}>permanently</Text>{' '}
           lost.
         </Text>
 
@@ -49,8 +49,8 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
           <Pressable
             style={{
               ...styles.button,
-              borderColor: colors.orange100,
-              backgroundColor: colors.orange100,
+              borderColor: colors.primary100,
+              backgroundColor: colors.primary100,
             }}
             onPress={handleCancel}
             disabled={isLoading !== undefined}>

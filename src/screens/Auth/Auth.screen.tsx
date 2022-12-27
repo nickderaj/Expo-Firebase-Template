@@ -4,9 +4,9 @@ import { googleAuth, googleLogin, handleAppleLogin, handleGuestLogin } from '@/u
 import { animateVal, loadAssetsAsync } from '@/util/helpers'
 import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
-import { Animated, ImageBackground, ImageSourcePropType } from 'react-native'
+import { Animated, ImageSourcePropType } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { backgroundFade, imageFade, menuFade, styles } from './Auth.styles'
+import { imageFade, menuFade, styles } from './Auth.styles'
 import GuestButton from './components/GuestButton'
 import GuestModal from './components/GuestModal'
 
@@ -44,12 +44,8 @@ const AuthScreen: React.FC = () => {
   }, [googleRes])
 
   return (
-    <ImageBackground
-      style={styles.imageContainer}
-      resizeMode="cover"
-      source={require('@/images/app/splash.png')}>
-      <Animated.View
-        style={{ ...styles.container, backgroundColor: backgroundFade(overlayOpacity) }}>
+    <>
+      <Animated.View style={styles.container}>
         <Animated.Image
           source={require('@/images/app/logo.png')}
           style={{
@@ -88,7 +84,7 @@ const AuthScreen: React.FC = () => {
           isLoading={isLoading}
         />
       )}
-    </ImageBackground>
+    </>
   )
 }
 

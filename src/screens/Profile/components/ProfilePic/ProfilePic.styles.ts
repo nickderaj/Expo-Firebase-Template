@@ -17,5 +17,6 @@ export const styles = StyleSheet.create({
   image: {
     width: 0.22 * deviceWidth,
     height: 0.22 * deviceWidth,
+    resizeMode: 'contain',
   },
 })

@@ -1,4 +1,4 @@
-import { colors } from '@/util/styles'
+import { deviceWidth } from '@/util/styles'
 import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -12,18 +12,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    height: 200,
-    shadowColor: colors.neutral900,
-    shadowOpacity: 1,
-    shadowOffset: { width: -5, height: 5 },
-    shadowRadius: 5,
+    height: deviceWidth * 0.3,
+    width: deviceWidth * 0.3,
   },
 })
 
 export const backgroundFade = (val: Animated.Value) =>
   val.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgba(0,0,0,0)', 'rgba(0, 0,0,0.5)'],
+    outputRange: ['rgba(0,0,0,0)', 'rgba(0, 0,0,0.5)'], // for faded background
   })
 
 export const imageFade = (val: Animated.Value) =>

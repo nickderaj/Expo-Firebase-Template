@@ -14,6 +14,6 @@ export const colors: { [idx: string]: string } = {
   neutral700: '#404040',
   neutral800: '#262626',
   neutral900: '#171717',
-  orange100: '#f9b07f',
-  orange900: '#df7126',
+  primary100: '#00acee',
+  primary900: '#00acee',
 }

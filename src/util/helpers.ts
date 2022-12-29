@@ -3,6 +3,7 @@ import { track } from '@amplitude/analytics-react-native'
 import { Asset } from 'expo-asset'
 import Constants from 'expo-constants'
 import { loadAsync } from 'expo-font'
+import * as Haptics from 'expo-haptics'
 import { Animated, Platform } from 'react-native'
 
 export const loadAssetsAsync = async ({
@@ -40,5 +41,25 @@ export const logEvent = async (name: string, data: object = {}) => {
     track(name, dataToTrack)
   } catch (error) {
     console.log(`Error logging event: ${name}`, error)
+  }
+}
+
+type clickTypes = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
+export const hapticClick = (type?: clickTypes) => {
+  switch (type) {
+    case 'light':
+      return Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    case 'medium':
+      return Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    case 'heavy':
+      return Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+    case 'success':
+      return Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+    case 'warning':
+      return Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+    case 'error':
+      return Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+    default:
+      return Haptics.selectionAsync()
   }
 }

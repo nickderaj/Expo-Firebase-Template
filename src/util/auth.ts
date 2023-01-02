@@ -1,7 +1,6 @@
 import { auth } from '@/firebase/config'
 import { LoginEnum } from '@/models/Auth'
-import { clearAuth, setEmail, setLoginMethod, setName } from '@/redux/slices/authSlice'
-import { setUser } from '@/redux/slices/userSlice'
+import { clearUser, setEmail, setLoginMethod, setName, setUser } from '@/redux/slices/userSlice'
 import { identify, Identify, reset, setUserId } from '@amplitude/analytics-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -47,7 +46,7 @@ export const logOut = async (dispatch: Dispatch) => {
   try {
     await AsyncStorage.clear() // clear local storage
     await signOut(auth) // sign out of firebase
-    dispatch(clearAuth()) // clear redux state
+    dispatch(clearUser()) // clear redux state
     reset() // reset amplitude
   } catch (error) {
     console.log('Log Out Error: ', error)

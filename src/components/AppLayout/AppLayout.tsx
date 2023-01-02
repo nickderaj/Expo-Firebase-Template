@@ -1,11 +1,12 @@
 import { amplitudeApiKey } from '@/constants/project.constants'
 import { RootState } from '@/redux/store'
+import { loadAudio, pauseAudio, playAudio } from '@/util/audio'
 import { authListener } from '@/util/auth'
 import { clickNotificationListener, receivedNotificationListener } from '@/util/notifications'
 import { init as initAmplitude } from '@amplitude/analytics-react-native'
-import { useEffect } from 'react'
+import { Audio } from 'expo-av'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Splash from '../Splash'
 
 type Props = {
   children: React.ReactNode
@@ -13,11 +14,14 @@ type Props = {
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   const { userObj } = useSelector((state: RootState) => state.user)
+  const { music } = useSelector((state: RootState) => state.config)
+  const sound = useRef(new Audio.Sound()) // music
   const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = authListener(dispatch)
     if (!__DEV__) initAmplitude(amplitudeApiKey)
+    loadAudio(sound, dispatch)
 
     return () => {
       unsubscribe()
@@ -35,7 +39,12 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     }
   }, [userObj?.id])
 
-  return <Splash>{children}</Splash>
+  useEffect(() => {
+    if (music) playAudio(sound)
+    if (!music) pauseAudio(sound)
+  }, [music])
+
+  return <>{children}</>
 }
 
 export default AppLayout

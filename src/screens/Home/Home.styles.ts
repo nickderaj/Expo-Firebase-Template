@@ -1,4 +1,4 @@
-import { deviceHeight, deviceWidth } from '@/util/styles'
+import { colors, deviceHeight, deviceWidth } from '@/util/styles'
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    backgroundColor: colors.primary50,
   },
   catWrapper: {
     position: 'absolute',

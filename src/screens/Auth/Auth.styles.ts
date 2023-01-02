@@ -1,4 +1,4 @@
-import { deviceWidth } from '@/util/styles'
+import { colors, deviceWidth } from '@/util/styles'
 import { Animated, StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.primary50,
   },
   logo: {
     height: deviceWidth * 0.3,

@@ -7,11 +7,11 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/app/icon.png",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#fafafa",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f5f5f5",
     "splash": {
       "image": "./assets/images/app/splash.png",
-      "backgroundColor": "#fafafa",
+      "backgroundColor": "#f5f5f5",
       "resizeMode": "cover"
     },
     "updates": {

@@ -13,11 +13,11 @@ const theme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.neutral100,
-    text: colors.neutral100,
-    border: colors.neutral700,
-    card: colors.neutral900,
-    background: colors.neutral900,
+    primary: colors.neutral900,
+    text: colors.neutral900,
+    border: colors.neutral300,
+    card: colors.neutral100,
+    background: colors.neutral100,
   },
 }
 

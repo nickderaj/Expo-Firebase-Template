@@ -45,7 +45,7 @@ export const logEvent = async (name: string, data: object = {}) => {
 }
 
 type clickTypes = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
-export const hapticClick = (type?: clickTypes) => {
+export const clickHaptic = (type?: clickTypes) => {
   switch (type) {
     case 'light':
       return Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)

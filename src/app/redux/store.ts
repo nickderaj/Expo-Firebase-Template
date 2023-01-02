@@ -5,18 +5,18 @@ import {
   PreloadedState,
   Reducer,
 } from '@reduxjs/toolkit'
-import authReducer from './slices/authSlice'
 import userReducer from './slices/userSlice'
+import configReducer from './slices/configSlice'
 
 export const combinedReducer = combineReducers({
-  auth: authReducer,
   user: userReducer,
+  config: configReducer,
 })
 
 const setupStore = (preloadedState?: PreloadedState<RootState>) =>
   configureStore({ reducer: combinedReducer, preloadedState })
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-  if (action.type === 'auth/clearAuth') state = {} as RootState
+  if (action.type === 'auth/clearUser') state = {} as RootState
   return combinedReducer(state, action)
 }
 

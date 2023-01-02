@@ -1,18 +1,9 @@
-import { setMusic } from '@/redux/slices/configSlice'
-import { store } from '@/redux/store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Dispatch } from '@reduxjs/toolkit'
 import { Audio } from 'expo-av'
 
-export const soundOn = async (): Promise<boolean> => {
-  const localStorage = await AsyncStorage.getItem('sfx')
-  return localStorage === 'true' && store.getState().config.sfx
-}
-
-export const musicOn = async (): Promise<boolean> => {
-  const localStorage = await AsyncStorage.getItem('music')
-  return localStorage === 'true' && store.getState().config.music
-}
+export const soundOn = async (): Promise<boolean> => (await AsyncStorage.getItem('sfx')) !== 'false'
+export const musicOn = async (): Promise<boolean> =>
+  (await AsyncStorage.getItem('music')) !== 'false'
 
 export const clickSFX = async () => {
   if (!(await soundOn())) return
@@ -27,7 +18,6 @@ export const clickSFXForced = async () => {
 }
 
 export const playAudio = async (sound: React.MutableRefObject<Audio.Sound>) => {
-  if (!(await musicOn())) return
   try {
     const result = await sound.current.getStatusAsync()
     if (result.isLoaded) {
@@ -49,20 +39,17 @@ export const pauseAudio = async (sound: React.MutableRefObject<Audio.Sound>) => 
   } catch (error) {}
 }
 
-export const loadAudio = async (sound: React.MutableRefObject<Audio.Sound>, dispatch: Dispatch) => {
+export const loadAudio = async (sound: React.MutableRefObject<Audio.Sound>) => {
   const checkloading = await sound.current.getStatusAsync()
-  const localStorage = await AsyncStorage.getItem('music')
-  if (localStorage === 'false') dispatch(setMusic(false))
-
   if (checkloading.isLoaded === true) return
   try {
     const result = await sound.current.loadAsync(
       require('@/audio/music/across_land_and_sea.mp3'),
-      {},
+      { isLooping: true },
       true,
     )
     if (!result.isLoaded) return console.log('Error in loading Audio')
-    playAudio(sound)
+    if (await musicOn()) playAudio(sound)
   } catch (error) {
     console.log(error)
   }

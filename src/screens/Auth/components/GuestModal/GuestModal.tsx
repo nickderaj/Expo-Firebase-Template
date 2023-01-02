@@ -1,10 +1,11 @@
+import Button from '@/components/Button'
 import Modal from '@/components/Modal'
 import Title from '@/components/Title'
 import { LoginEnum } from '@/models/Auth'
 import { animateVal } from '@/util/helpers'
 import { colors } from '@/util/styles'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
-import { ActivityIndicator, Animated, Pressable, Text, View } from 'react-native'
+import { ActivityIndicator, Animated, Text, View } from 'react-native'
 import { loadingFadeIn, loadingFadeOut, styles } from './GuestModal.styles'
 
 type Props = {
@@ -46,7 +47,7 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
         </Text>
 
         <View style={styles.buttonContainer}>
-          <Pressable
+          <Button
             style={{
               ...styles.button,
               borderColor: colors.primary100,
@@ -55,10 +56,10 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
             onPress={handleCancel}
             disabled={isLoading !== undefined}>
             <Text style={styles.buttonText}>Cancel</Text>
-          </Pressable>
-          <Pressable onPress={guestLogin} style={styles.button} disabled={isLoading !== undefined}>
+          </Button>
+          <Button onPress={guestLogin} style={styles.button} disabled={isLoading !== undefined}>
             <Text style={{ ...styles.buttonText }}>Continue</Text>
-          </Pressable>
+          </Button>
         </View>
       </Animated.View>
     </Modal>

@@ -1,3 +1,4 @@
+import Button from '@/components/Button'
 import { LoginEnum } from '@/models/Auth'
 import { animateVal } from '@/util/helpers'
 import { colors } from '@/util/styles'
@@ -7,7 +8,6 @@ import {
   Animated,
   ImageSourcePropType,
   Platform,
-  Pressable,
   PressableProps,
 } from 'react-native'
 import { loadingFade, styles, textFade } from './AuthButton.styles'
@@ -38,7 +38,7 @@ const AuthButton: React.FC<Props> = ({ onPress, disabled, text, image, variant, 
 
   if (variant === LoginEnum.APPLE && Platform.OS !== 'ios') return null
   return (
-    <Pressable
+    <Button
       onPress={onPress}
       disabled={disabled}
       style={{
@@ -64,7 +64,7 @@ const AuthButton: React.FC<Props> = ({ onPress, disabled, text, image, variant, 
           {text}
         </Animated.Text>
       )}
-    </Pressable>
+    </Button>
   )
 }
 

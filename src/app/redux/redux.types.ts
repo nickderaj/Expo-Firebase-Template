@@ -9,6 +9,5 @@ export interface IUserState {
 }
 
 export interface IConfigState {
-  sfx: boolean
   music: boolean
 }

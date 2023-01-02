@@ -1,10 +1,10 @@
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { setMusic, setSfx } from '@/redux/slices/configSlice'
+import { setMusic } from '@/redux/slices/configSlice'
 import { RootState } from '@/redux/store'
 import { clickSFXForced, musicOn, soundOn } from '@/util/audio'
 import { logOut } from '@/util/auth'
-import { clickHaptic, loadAssetsAsync, logEvent } from '@/util/helpers'
+import { clickHaptic, logEvent } from '@/util/helpers'
 import { deviceWidth } from '@/util/styles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
@@ -15,45 +15,46 @@ import { styles } from './Profile.styles'
 import { ProfileScreenProps } from './Profile.types'
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-  const { userObj } = useSelector((state: RootState) => state.user)
-  const { sfx, music } = useSelector((state: RootState) => state.config)
+  const [sfx, setSfx] = useState<boolean>(true)
   const [loggingOut, setLoggingOut] = useState<boolean>(false)
+
+  const { userObj } = useSelector((state: RootState) => state.user)
+  const { music } = useSelector((state: RootState) => state.config)
   const dispatch = useDispatch()
 
   const handleLogout = async () => {
     setLoggingOut(true)
     logEvent('logout', { user: userObj?.id })
-    await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
     await logOut(dispatch)
     setLoggingOut(false)
   }
 
   const handleSfx = async () => {
-    if (await soundOn()) {
-      AsyncStorage.setItem('sfx', 'false')
-      dispatch(setSfx(false))
-    } else {
-      clickHaptic()
-      clickSFXForced()
-      AsyncStorage.setItem('sfx', 'true')
-      dispatch(setSfx(true))
-    }
+    setSfx(prevState => !prevState)
+
+    if (await soundOn()) return AsyncStorage.setItem('sfx', 'false')
+    clickHaptic()
+    clickSFXForced()
+    AsyncStorage.setItem('sfx', 'true')
   }
 
   const handleMusic = async () => {
-    if (await musicOn()) {
-      AsyncStorage.setItem('music', 'false')
-      dispatch(setMusic(false))
-    } else {
-      AsyncStorage.setItem('music', 'true')
-      dispatch(setMusic(true))
-    }
+    dispatch(setMusic(!music))
+    if (await musicOn()) return AsyncStorage.setItem('music', 'false')
+    AsyncStorage.setItem('music', 'true')
   }
-
-  const handleBack = () => navigation.replace('Home')
 
   useEffect(() => {
     logEvent('view_profile')
+
+    const initSound = async () => {
+      const sfxOn = await AsyncStorage.getItem('sfx')
+      const musicOn = await AsyncStorage.getItem('music')
+
+      sfxOn === 'false' ? setSfx(false) : setSfx(true)
+      musicOn === 'false' ? dispatch(setMusic(false)) : dispatch(setMusic(true))
+    }
+    initSound()
   }, [])
 
   return (
@@ -76,7 +77,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
             <Title variant="primary500">Logout</Title>
           </Button>
 
-          <Button onPress={handleBack} disabled={loggingOut} style={{ paddingTop: 48 }}>
+          <Button
+            onPress={() => navigation.replace('Home')}
+            disabled={loggingOut}
+            style={{ paddingTop: 48 }}>
             <Title variant="neutral100">Back</Title>
           </Button>
         </View>

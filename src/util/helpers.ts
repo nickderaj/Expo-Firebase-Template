@@ -4,7 +4,7 @@ import { Asset } from 'expo-asset'
 import Constants from 'expo-constants'
 import { loadAsync } from 'expo-font'
 import * as Haptics from 'expo-haptics'
-import { Animated, Platform } from 'react-native'
+import { Animated, Image, Platform } from 'react-native'
 
 export const loadAssetsAsync = async ({
   images = [],
@@ -15,7 +15,11 @@ export const loadAssetsAsync = async ({
   fonts?: string[]
   videos?: string[]
 }) => {
-  const cacheImages = () => images.map(image => Asset.fromModule(image).downloadAsync())
+  const cacheImages = () =>
+    images.map(image => {
+      if (typeof image === 'string') return Image.prefetch(image)
+      return Asset.fromModule(image).downloadAsync()
+    })
   const cacheVideos = () => videos.map(video => Asset.fromModule(video).downloadAsync())
   const cacheFonts = () => fonts.map(font => loadAsync(font))
 

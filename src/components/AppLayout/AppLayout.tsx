@@ -21,7 +21,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = authListener(dispatch)
     if (!__DEV__) initAmplitude(amplitudeApiKey)
-    loadAudio(sound, dispatch)
+    loadAudio(sound)
 
     return () => {
       unsubscribe()

@@ -1,7 +1,7 @@
 import { LoginEnum, loginMap } from '@/models/Auth'
 import AuthButton from '@/screens/Auth/components/AuthButton'
 import { googleAuth, googleLogin, handleAppleLogin, handleGuestLogin } from '@/util/auth'
-import { animateVal, loadAssetsAsync } from '@/util/helpers'
+import { animateVal } from '@/util/helpers'
 import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
 import { Animated, ImageSourcePropType } from 'react-native'
@@ -25,7 +25,6 @@ const AuthScreen: React.FC = () => {
   const handleLogin = async (method: LoginEnum) => {
     setIsLoading(method)
     // Load home page image
-    await loadAssetsAsync({ images: [require('@/images/app/splash.png')] })
     if (method === LoginEnum.GOOGLE) await handleGoogleLogin()
     if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch)
     if (method === LoginEnum.GUEST) await handleGuestLogin(dispatch)

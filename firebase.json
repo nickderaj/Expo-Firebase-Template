@@ -13,14 +13,14 @@
   "emulators": {
     "functions": {
       "port": 5001,
-      "host": "192.168.5.206"
+      "host": "192.168.1.14"
     },
     "firestore": {
       "port": 8080
     },
     "database": {
       "port": 9000,
-      "host": "192.168.5.206"
+      "host": "192.168.1.14"
     },
     "hosting": {
       "port": 5000

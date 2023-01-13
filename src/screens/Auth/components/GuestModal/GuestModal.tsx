@@ -47,6 +47,9 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
         </Text>
 
         <View style={styles.buttonContainer}>
+          <Button onPress={guestLogin} style={styles.button} disabled={isLoading !== undefined}>
+            <Text style={{ ...styles.buttonText }}>Continue</Text>
+          </Button>
           <Button
             style={{
               ...styles.button,
@@ -56,9 +59,6 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
             onPress={handleCancel}
             disabled={isLoading !== undefined}>
             <Text style={styles.buttonText}>Cancel</Text>
-          </Button>
-          <Button onPress={guestLogin} style={styles.button} disabled={isLoading !== undefined}>
-            <Text style={{ ...styles.buttonText }}>Continue</Text>
           </Button>
         </View>
       </Animated.View>

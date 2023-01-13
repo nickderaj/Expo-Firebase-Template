@@ -10,17 +10,18 @@ const httpFunctions = [
   'login',
   'clickNotification',
   'queueNotification',
+  'sendGlobalNotification',
   'sendQueuedNotifications',
   'updateExpoToken',
-  'friendRequest',
-  'rejectFriend',
-  'getFriends',
 ];
 httpFunctions.forEach((fn: string) => {
   if (isCalled(fn)) exports[fn] = initFunction(fn);
 });
 
-const cronFrunctions = [{ fn: 'sendQueuedNotifications', schedule: '*/10 * * * *' }];
+const cronFrunctions = [
+  { fn: 'sendQueuedNotifications', schedule: '*/10 * * * *' },
+  { fn: 'sendDailyNotifications', schedule: '0 12 * * *' },
+];
 cronFrunctions.forEach(({ fn, schedule }) => {
   if (isCalled(fn)) exports[fn] = scheduleFunction(fn, schedule);
 });

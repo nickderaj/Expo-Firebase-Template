@@ -21,7 +21,7 @@ export type queueNotiFunction = (
 
 // sendNotification //
 export type sendNotiReq = { users: string[]; title: string; body: string };
-export type sendNotiRes = { status: StatusEnum.OK };
+export type sendNotiRes = { status: StatusEnum.OK; data: { sent: number; failed: number } };
 export type sendNotiFunction = (
   admin: Parameters<FirebaseFunction>[0],
   data: sendNotiReq,
@@ -45,3 +45,23 @@ export type updateExpoFunction = (
   data: updateExpoReq,
   context?: CallableContext,
 ) => Promise<updateExpoRes | HttpErrorResponse>;
+
+// sendDailyNotifications //
+export type dailyNotiRes = {
+  status: StatusEnum.OK;
+  data: { sent: number; failed: number };
+};
+export type dailyNotiFunction = (
+  admin: Parameters<FirebaseFunction>[0],
+) => Promise<dailyNotiRes | HttpErrorResponse>;
+
+// sendGlobalNotification //
+export type globalNotiReq = { title: string; body: string };
+export type globalNotiRes = {
+  status: StatusEnum.OK;
+  data: { sent: number; failed: number };
+};
+export type globalNotiFunction = (
+  admin: Parameters<FirebaseFunction>[0],
+  data: globalNotiReq,
+) => Promise<globalNotiRes | HttpErrorResponse>;

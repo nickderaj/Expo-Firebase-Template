@@ -12,6 +12,8 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
 
     // 1. Store expo tokens to send notifications too
     const tokens: { to: string; title: string; body: string }[] = [];
+    const noTokens: { user: string }[] = [];
+
     await Promise.all(
       users.map(async user => {
         if (!(await userExists(admin, user))) return;
@@ -19,9 +21,9 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
         const dataRef = db.doc(`users/${user}`).collection('user_data');
         const privateRef = await dataRef.doc('user_private').get();
         const userData = privateRef.data();
-        if (!userData?.expoToken) return;
+        if (!userData?.expoToken) return noTokens.push({ user });
 
-        tokens.push({ to: userData.expoToken, title, body });
+        return tokens.push({ to: userData.expoToken, title, body });
       }),
     );
     if (tokens.length === 0) throw new Error('No users or tokens found');
@@ -46,7 +48,7 @@ const sendNotification: sendNotiFunction = async (admin, data) => {
       }),
     );
 
-    return { status: 200 };
+    return { status: 200, data: { sent: tokens.length, failed: noTokens.length } };
   } catch (error) {
     return handleError(error);
   }

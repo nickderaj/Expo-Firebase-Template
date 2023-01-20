@@ -80,7 +80,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
           <Button
             onPress={() => navigation.replace('Home')}
             disabled={loggingOut}
-            style={{ paddingTop: 48 }}>
+            style={{ paddingTop: 48 }}
+          >
             <Title variant="neutral100">Back</Title>
           </Button>
         </View>

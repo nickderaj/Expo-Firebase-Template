@@ -15,6 +15,7 @@ import {
   signOut,
 } from 'firebase/auth'
 import { Alert, Platform } from 'react-native'
+import { AccessToken, LoginManager, Profile } from 'react-native-fbsdk-next'
 import { login } from 'src/api/auth.api'
 import { logEvent } from './helpers'
 
@@ -49,7 +50,7 @@ export const logOut = async (dispatch: Dispatch) => {
     dispatch(clearUser()) // clear redux state
     reset() // reset amplitude
   } catch (error) {
-    console.log('Log Out Error: ', error)
+    console.log('Logout error: ', error)
   }
 }
 
@@ -76,7 +77,7 @@ export const googleLogin = async (dispatch: Dispatch, googleRes: any) => {
     logEvent('login', { name: res.user.displayName, email: res.user.email, method: 'google' })
   } catch (error) {
     Alert.alert('Error', 'Failed to log in, please try again later.')
-    console.log('Google Login Error: ', error)
+    console.log('Google login error: ', error)
   }
 }
 
@@ -84,14 +85,13 @@ export const handleAppleLogin = async (dispatch: Dispatch) => {
   try {
     logEvent('login_tap', { method: 'apple' })
     if (Platform.OS !== 'ios') throw new Error('Not on iOS')
+    dispatch(setLoginMethod(LoginEnum.APPLE))
+    AsyncStorage.setItem('loginMethod', LoginEnum.APPLE)
 
     const state = Math.random().toString(36).substring(2, 15)
     const rawNonce = Math.random().toString(36).substring(2, 10)
     const requestedScopes = [AppleAuthenticationScope.FULL_NAME, AppleAuthenticationScope.EMAIL]
     const nonce = await digestStringAsync(CryptoDigestAlgorithm.SHA256, rawNonce)
-
-    dispatch(setLoginMethod(LoginEnum.APPLE))
-    AsyncStorage.setItem('loginMethod', LoginEnum.APPLE)
 
     const { identityToken } = await signInAsync({
       requestedScopes,
@@ -116,16 +116,13 @@ export const handleAppleLogin = async (dispatch: Dispatch) => {
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     Alert.alert('Error', 'Failed to log in, please try again later.')
-    console.log('Apple Login Error: ', error)
+    console.log('Apple login error: ', error)
   }
 }
 
 export const handleGuestLogin = async (dispatch: Dispatch) => {
   try {
-    logEvent('login_tap', {
-      method: 'guest',
-    })
-
+    logEvent('login_tap', { method: 'guest' })
     dispatch(setLoginMethod(LoginEnum.GUEST))
     AsyncStorage.setItem('loginMethod', LoginEnum.GUEST)
 
@@ -135,6 +132,33 @@ export const handleGuestLogin = async (dispatch: Dispatch) => {
     logEvent('login', { name: 'guest', email: 'guest', method: 'guest' })
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
-    console.error(error)
+    console.error('Guest login error: ', error)
+  }
+}
+
+export const handleFacebookLogin = async (dispatch: Dispatch) => {
+  try {
+    logEvent('login_tap', { method: 'facebook' })
+    dispatch(setLoginMethod(LoginEnum.FACEBOOK))
+    AsyncStorage.setItem('loginMethod', LoginEnum.FACEBOOK)
+
+    const res = await LoginManager.logInWithPermissions(['public_profile'])
+    if (!res.isCancelled) {
+      console.log(res)
+      console.log('Login success with permissions: ' + res.grantedPermissions?.toString())
+    }
+
+    const user = await Profile.getCurrentProfile()
+    if (user) {
+      console.log('user: ', user)
+      console.log(`The current logged user is: ${user.name}. His profile id is: ${user.userID}.`)
+    }
+
+    const tokenRes = await AccessToken.getCurrentAccessToken()
+    console.log(tokenRes?.accessToken.toString())
+  } catch (error: any) {
+    if (error?.code === 'ERR_CANCELED') return
+    Alert.alert('Error', 'Failed to log in, please try again later.')
+    console.error('Fb login error: ', error)
   }
 }

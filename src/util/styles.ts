@@ -18,4 +18,5 @@ export const colors: { [idx: string]: string } = {
   primary100: '#f59b9e',
   primary500: '#981d26',
   primary900: '#500E10',
+  facebook: '#1977f2',
 }

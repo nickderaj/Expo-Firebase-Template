@@ -2,7 +2,7 @@ import { amplitudeApiKey } from '@/constants/project.constants'
 import { RootState } from '@/redux/store'
 import { loadAudio, pauseAudio, playAudio } from '@/util/audio'
 import { authListener } from '@/util/auth'
-import { clickNotificationListener, receivedNotificationListener } from '@/util/notifications'
+import { notificationInit } from '@/util/notification'
 import { init as initAmplitude } from '@amplitude/analytics-react-native'
 import { Audio } from 'expo-av'
 import { useEffect, useRef } from 'react'
@@ -13,31 +13,23 @@ type Props = {
 }
 
 const AppLayout: React.FC<Props> = ({ children }) => {
-  const { userObj } = useSelector((state: RootState) => state.user)
   const { music } = useSelector((state: RootState) => state.config)
   const sound = useRef(new Audio.Sound()) // music
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const unsubscribe = authListener(dispatch)
+    // OneSignal
+    notificationInit()
+    // Amplitude
     if (!__DEV__) initAmplitude(amplitudeApiKey)
+    // App
+    const unsubscribe = authListener(dispatch)
     loadAudio(sound)
 
     return () => {
       unsubscribe()
     }
   }, [])
-
-  useEffect(() => {
-    if (!userObj?.id) return
-    const clickSubscription = clickNotificationListener(userObj.id)
-    const recSubscription = receivedNotificationListener(userObj.id)
-
-    return () => {
-      clickSubscription.remove()
-      recSubscription.remove()
-    }
-  }, [userObj?.id])
 
   useEffect(() => {
     if (music) playAudio(sound)

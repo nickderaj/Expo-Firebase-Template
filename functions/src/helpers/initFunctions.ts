@@ -1,6 +1,5 @@
 import { projectRegion } from '@/constants/project.constants';
 import auth from '@/functions/auth';
-import notifications from '@/functions/notifications';
 import { FirebaseFunction } from '@/models/firebase';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
@@ -23,10 +22,4 @@ export const scheduleFunction = (name: string, schedule: string) => {
 
 const functionMap: { [idx: string]: FirebaseFunction } = {
   login: auth.login,
-  clickNotification: notifications.clickNotification,
-  queueNotification: notifications.queueNotification,
-  sendDailyNotifications: notifications.sendDailyNotifications,
-  sendGlobalNotification: notifications.sendGlobalNotification,
-  sendQueuedNotifications: notifications.sendQueuedNotifications,
-  updateExpoToken: notifications.updateExpoToken,
 };

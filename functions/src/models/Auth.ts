@@ -5,6 +5,7 @@ import { IUser } from './User';
 export enum LoginEnum {
   GOOGLE = 'google',
   APPLE = 'apple',
+  FACEBOOK = 'facebook',
   GUEST = 'guest',
 }
 

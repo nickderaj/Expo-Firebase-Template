@@ -1,6 +1,12 @@
 import { LoginEnum, loginMap } from '@/models/Auth'
 import AuthButton from '@/screens/Auth/components/AuthButton'
-import { googleAuth, googleLogin, handleAppleLogin, handleGuestLogin } from '@/util/auth'
+import {
+  googleAuth,
+  googleLogin,
+  handleAppleLogin,
+  handleFacebookLogin,
+  handleGuestLogin,
+} from '@/util/auth'
 import { animateVal } from '@/util/helpers'
 import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
@@ -20,6 +26,7 @@ const AuthScreen: React.FC = () => {
   const imageMap: { [idx in Exclude<LoginEnum, LoginEnum.GUEST>]: ImageSourcePropType } = {
     [LoginEnum.APPLE]: require('@/images/icons/auth/login_apple.png'),
     [LoginEnum.GOOGLE]: require('@/images/icons/auth/login_google.png'),
+    [LoginEnum.FACEBOOK]: require('@/images/icons/auth/login_fb.png'),
   }
 
   const handleLogin = async (method: LoginEnum) => {
@@ -28,6 +35,7 @@ const AuthScreen: React.FC = () => {
     if (method === LoginEnum.GOOGLE) await handleGoogleLogin()
     if (method === LoginEnum.APPLE) await handleAppleLogin(dispatch)
     if (method === LoginEnum.GUEST) await handleGuestLogin(dispatch)
+    if (method === LoginEnum.FACEBOOK) await handleFacebookLogin(dispatch)
     setIsLoading(undefined)
   }
 
@@ -58,14 +66,14 @@ const AuthScreen: React.FC = () => {
           style={{
             opacity: screenOpacity,
             transform: [{ translateY: menuFade(screenOpacity) }],
-          }}>
+          }}
+        >
           {loginMap.map(loginMethod => (
             <AuthButton
               key={loginMethod}
               text={`Sign in with ${
                 loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1).toLowerCase()
               }`}
-              image={imageMap[loginMethod]}
               variant={loginMethod}
               onPress={() => handleLogin(loginMethod)}
               isLoading={isLoading === loginMethod}

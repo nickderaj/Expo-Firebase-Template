@@ -34,7 +34,8 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
       opacityRef={opacityRef}
       show={show}
       onClose={() => setShow(false)}
-      disabled={isLoading !== undefined}>
+      disabled={isLoading !== undefined}
+    >
       <Animated.View style={{ ...styles.activityIndicator, opacity: loadingFadeIn(loadingRef) }}>
         <ActivityIndicator color={colors.neutral900} />
       </Animated.View>
@@ -57,7 +58,8 @@ const GuestModal: React.FC<Props> = ({ show, setShow, guestLogin, isLoading }) =
               backgroundColor: colors.primary100,
             }}
             onPress={handleCancel}
-            disabled={isLoading !== undefined}>
+            disabled={isLoading !== undefined}
+          >
             <Text style={styles.buttonText}>Cancel</Text>
           </Button>
         </View>

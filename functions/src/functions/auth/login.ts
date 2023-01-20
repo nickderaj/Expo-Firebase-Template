@@ -13,7 +13,7 @@ import { IUser } from '@/models/User';
 
 const login: loginFunction = async (admin, data, context) => {
   try {
-    const { uid, loginMethod, expoToken } = data; // add email to userObj
+    const { uid, loginMethod } = data; // add email to userObj
     checkParams({ uid, loginMethod });
     checkAuth(uid, context);
 
@@ -41,10 +41,6 @@ const login: loginFunction = async (admin, data, context) => {
         transaction.set(publicRef, { nonce: Math.floor(Math.random() * 1000000) });
         transaction.set(loginRef, { created_at: timeNow, path: projectName });
       } else transaction.set(loginRef, { created_at: timeNow, path: projectName });
-
-      // 2. Set notification token
-      const privateRef = dataRef.doc('user_private');
-      if (expoToken) transaction.set(privateRef, { expoToken }, { merge: true });
 
       return {
         status: StatusEnum.OK,

@@ -25,7 +25,8 @@ const Modal: React.FC<Props> = ({ opacityRef, show, onClose, disabled, children 
     <Animated.View style={{ ...styles.overlay, opacity: opacityRef }}>
       <Pressable onPress={handleClose} style={styles.container} disabled={disabled} />
       <Animated.View
-        style={{ ...styles.modal, transform: [{ translateY: containerFade(opacityRef) }] }}>
+        style={{ ...styles.modal, transform: [{ translateY: containerFade(opacityRef) }] }}
+      >
         {children}
       </Animated.View>
     </Animated.View>

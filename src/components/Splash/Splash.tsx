@@ -35,7 +35,8 @@ const Splash: React.FC<Props> = ({ children }) => {
               resizeMode="contain"
             />
           </View>
-        }>
+        }
+      >
         {!animationDone && <View style={styles.maskColor} />}
         <Animated.View style={[{ flex: 1 }, appFade(animationRef)]}>{children}</Animated.View>
       </MaskedView>

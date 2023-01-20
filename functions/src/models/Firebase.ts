@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { CallableContext } from 'firebase-functions/v1/https';
 
 export enum StatusEnum {

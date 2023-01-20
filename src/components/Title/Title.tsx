@@ -27,7 +27,8 @@ const Title: React.FC<Props> = ({ children, variant, style }) => {
           color: color(),
         },
         style && style,
-      ])}>
+      ])}
+    >
       {children}
     </Text>
   )

@@ -40,6 +40,13 @@ export const pauseAudio = async (sound: React.MutableRefObject<Audio.Sound>) => 
 }
 
 export const loadAudio = async (sound: React.MutableRefObject<Audio.Sound>) => {
+  await Audio.setAudioModeAsync({
+    staysActiveInBackground: false,
+    playsInSilentModeIOS: false,
+    shouldDuckAndroid: true,
+    playThroughEarpieceAndroid: true,
+  })
+
   const checkloading = await sound.current.getStatusAsync()
   if (checkloading.isLoaded === true) return
   try {

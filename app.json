@@ -46,10 +46,10 @@
       [
         "react-native-fbsdk-next",
         {
-          "appID": "48127127xxxxxxxx",
-          "clientToken": "c5078631e4065b60d7544a95xxxxxxxx",
-          "displayName": "Expo Template",
-          "scheme": "fb48127127xxxxxxxx",
+          "appID": "943912779847085",
+          "clientToken": "2a5fa8955155724748f4daf27f804252",
+          "displayName": "Test App",
+          "scheme": "fb943912779847085",
           "advertiserIDCollectionEnabled": true,
           "autoLogAppEventsEnabled": true,
           "isAutoInitEnabled": true,

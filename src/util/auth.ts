@@ -8,6 +8,7 @@ import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication
 import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto'
 import { hideAsync } from 'expo-splash-screen'
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   OAuthProvider,
   signInAnonymously,
@@ -15,14 +16,14 @@ import {
   signOut,
 } from 'firebase/auth'
 import { Alert, Platform } from 'react-native'
-import { AccessToken, LoginManager, Profile } from 'react-native-fbsdk-next'
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next'
 import { login } from 'src/api/auth.api'
 import { logEvent } from './helpers'
 
 export const authListener = (dispatch: Dispatch) =>
   auth.onAuthStateChanged(async user => {
     try {
-      if (!user) return
+      if (!user) return setTimeout(() => hideAsync(), 200)
 
       const loginMethod = (await AsyncStorage.getItem('loginMethod')) as LoginEnum
       const res = await login(user.uid, loginMethod || LoginEnum.GOOGLE)
@@ -36,10 +37,9 @@ export const authListener = (dispatch: Dispatch) =>
       identify(identifyObj)
 
       dispatch(setUser(userObj))
+      setTimeout(() => hideAsync(), 200)
     } catch (error) {
       console.log('Auth Error: ', error)
-    } finally {
-      setTimeout(() => hideAsync(), 200)
     }
   })
 
@@ -142,20 +142,17 @@ export const handleFacebookLogin = async (dispatch: Dispatch) => {
     dispatch(setLoginMethod(LoginEnum.FACEBOOK))
     AsyncStorage.setItem('loginMethod', LoginEnum.FACEBOOK)
 
-    const res = await LoginManager.logInWithPermissions(['public_profile'])
-    if (!res.isCancelled) {
-      console.log(res)
-      console.log('Login success with permissions: ' + res.grantedPermissions?.toString())
-    }
+    const login = await LoginManager.logInWithPermissions(['public_profile', 'email'])
+    if (login.isCancelled) return
 
-    const user = await Profile.getCurrentProfile()
-    if (user) {
-      console.log('user: ', user)
-      console.log(`The current logged user is: ${user.name}. His profile id is: ${user.userID}.`)
-    }
+    const { accessToken } = (await AccessToken.getCurrentAccessToken()) || {}
+    if (!accessToken) return
 
-    const tokenRes = await AccessToken.getCurrentAccessToken()
-    console.log(tokenRes?.accessToken.toString())
+    const credential = FacebookAuthProvider.credential(accessToken)
+    const res = await signInWithCredential(auth, credential)
+    dispatch(setEmail(res.user.email || ''))
+    dispatch(setName(res.user.displayName || ''))
+    logEvent('login', { name: res.user.displayName, email: res.user.email, method: 'facebook' })
   } catch (error: any) {
     if (error?.code === 'ERR_CANCELED') return
     Alert.alert('Error', 'Failed to log in, please try again later.')

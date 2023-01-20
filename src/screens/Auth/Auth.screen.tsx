@@ -10,7 +10,7 @@ import {
 import { animateVal } from '@/util/helpers'
 import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
 import { useEffect, useRef, useState } from 'react'
-import { Animated, ImageSourcePropType } from 'react-native'
+import { Animated } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { imageFade, menuFade, styles } from './Auth.styles'
 import GuestButton from './components/GuestButton'
@@ -22,12 +22,6 @@ const AuthScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState<LoginEnum>()
   const [showGuest, setShowGuest] = useState<boolean>(false)
   const dispatch = useDispatch()
-
-  const imageMap: { [idx in Exclude<LoginEnum, LoginEnum.GUEST>]: ImageSourcePropType } = {
-    [LoginEnum.APPLE]: require('@/images/icons/auth/login_apple.png'),
-    [LoginEnum.GOOGLE]: require('@/images/icons/auth/login_google.png'),
-    [LoginEnum.FACEBOOK]: require('@/images/icons/auth/login_fb.png'),
-  }
 
   const handleLogin = async (method: LoginEnum) => {
     setIsLoading(method)

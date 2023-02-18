@@ -1,4 +1,5 @@
 import { projectName } from '@/constants/project.constants'
+import { store } from '@/redux/store'
 import { track } from '@amplitude/analytics-react-native'
 import { Asset } from 'expo-asset'
 import Constants from 'expo-constants'
@@ -50,6 +51,8 @@ export const logEvent = async (name: string, data: object = {}) => {
 
 type clickTypes = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
 export const clickHaptic = (type?: clickTypes) => {
+  if (!store.getState().config.vibrate) return
+
   switch (type) {
     case 'light':
       return Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)

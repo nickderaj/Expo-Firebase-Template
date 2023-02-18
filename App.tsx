@@ -1,13 +1,13 @@
 import AppLayout from '@/components/AppLayout'
+import Loading from '@/components/Loading'
 import RootNavigator from '@/navigator/RootNavigator'
-import { store } from '@/redux/store'
+import { persistor, store } from '@/redux/store'
 import { colors } from '@/util/styles'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { preventAutoHideAsync } from 'expo-splash-screen'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-preventAutoHideAsync() // show splash screen
 const theme = {
   ...DefaultTheme,
   dark: true,
@@ -31,11 +31,13 @@ export default function App() {
   if (!fontsLoaded) return null
   return (
     <Provider store={store}>
-      <AppLayout>
-        <NavigationContainer theme={theme}>
-          <RootNavigator />
-        </NavigationContainer>
-      </AppLayout>
+      <PersistGate persistor={persistor} loading={<Loading />}>
+        <AppLayout>
+          <NavigationContainer theme={theme}>
+            <RootNavigator />
+          </NavigationContainer>
+        </AppLayout>
+      </PersistGate>
     </Provider>
   )
 }

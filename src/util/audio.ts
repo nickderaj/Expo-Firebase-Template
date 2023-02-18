@@ -1,13 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { store } from '@/redux/store'
 import { Audio } from 'expo-av'
 
-export const soundOn = async (): Promise<boolean> => (await AsyncStorage.getItem('sfx')) !== 'false'
-export const musicOn = async (): Promise<boolean> =>
-  (await AsyncStorage.getItem('music')) !== 'false'
-
 export const clickSFX = async () => {
-  if (!(await soundOn())) return
-
+  if (!store.getState().config.sfx) return
   const { sound } = await Audio.Sound.createAsync(require('@/audio/sfx/click.mp3'))
   await sound.playAsync()
 }
@@ -56,7 +51,7 @@ export const loadAudio = async (sound: React.MutableRefObject<Audio.Sound>) => {
       true,
     )
     if (!result.isLoaded) return console.log('Error in loading Audio')
-    if (await musicOn()) playAudio(sound)
+    if (store.getState().config.music) playAudio(sound)
   } catch (error) {
     console.log(error)
   }

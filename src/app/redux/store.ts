@@ -1,26 +1,35 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import {
-  AnyAction,
-  combineReducers,
-  configureStore,
-  PreloadedState,
-  Reducer,
-} from '@reduxjs/toolkit'
-import userReducer from './slices/userSlice'
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist'
 import configReducer from './slices/configSlice'
+import userReducer from './slices/userSlice'
 
-export const combinedReducer = combineReducers({
+const combinedReducer = combineReducers({
   user: userReducer,
   config: configReducer,
 })
 
-const setupStore = (preloadedState?: PreloadedState<RootState>) =>
-  configureStore({ reducer: combinedReducer, preloadedState })
-const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-  if (action.type === 'auth/clearUser') state = {} as RootState
-  return combinedReducer(state, action)
-}
+const persistConfig = { key: 'root', version: 1, storage: AsyncStorage }
+const persistedReducer = persistReducer(persistConfig, combinedReducer)
 
-export const store = configureStore({ reducer: rootReducer })
-export type AppStore = ReturnType<typeof setupStore>
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+})
+export const persistor = persistStore(store)
+export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof combinedReducer>
-export type ReduxState = ReturnType<typeof store.getState>

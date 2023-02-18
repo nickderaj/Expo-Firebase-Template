@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dispatch } from '@reduxjs/toolkit'
 import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication'
 import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto'
-import { hideAsync } from 'expo-splash-screen'
 import {
   FacebookAuthProvider,
   GoogleAuthProvider,
@@ -23,7 +22,7 @@ import { logEvent } from './helpers'
 export const authListener = (dispatch: Dispatch) =>
   auth.onAuthStateChanged(async user => {
     try {
-      if (!user) return setTimeout(() => hideAsync(), 200)
+      if (!user) return
 
       const loginMethod = (await AsyncStorage.getItem('loginMethod')) as LoginEnum
       const res = await login(user.uid, loginMethod || LoginEnum.GOOGLE)
@@ -37,7 +36,6 @@ export const authListener = (dispatch: Dispatch) =>
       identify(identifyObj)
 
       dispatch(setUser(userObj))
-      setTimeout(() => hideAsync(), 200)
     } catch (error) {
       console.log('Auth Error: ', error)
     }

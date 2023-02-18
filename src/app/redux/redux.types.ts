@@ -10,4 +10,6 @@ export interface IUserState {
 
 export interface IConfigState {
   music: boolean
+  sfx: boolean
+  vibrate: boolean
 }

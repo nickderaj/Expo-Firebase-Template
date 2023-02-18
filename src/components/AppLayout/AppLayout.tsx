@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 type Props = {
-  children: React.ReactNode
+  children: React.ReactElement
 }
 
 const AppLayout: React.FC<Props> = ({ children }) => {
@@ -36,7 +36,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     if (!music) pauseAudio(sound)
   }, [music])
 
-  return <>{children}</>
+  return children
 }
 
 export default AppLayout

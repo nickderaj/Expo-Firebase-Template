@@ -1,12 +1,11 @@
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { setMusic } from '@/redux/slices/configSlice'
+import { setMusic, setSfx, setVibrate } from '@/redux/slices/configSlice'
 import { RootState } from '@/redux/store'
-import { clickSFXForced, musicOn, soundOn } from '@/util/audio'
+import { clickSFXForced } from '@/util/audio'
 import { logOut } from '@/util/auth'
 import { clickHaptic, logEvent } from '@/util/helpers'
 import { deviceWidth } from '@/util/styles'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,11 +14,9 @@ import { styles } from './Profile.styles'
 import { ProfileScreenProps } from './Profile.types'
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-  const [sfx, setSfx] = useState<boolean>(true)
   const [loggingOut, setLoggingOut] = useState<boolean>(false)
-
   const { userObj } = useSelector((state: RootState) => state.user)
-  const { music } = useSelector((state: RootState) => state.config)
+  const { music, sfx, vibrate } = useSelector((state: RootState) => state.config)
   const dispatch = useDispatch()
 
   const handleLogout = async () => {
@@ -29,32 +26,22 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     setLoggingOut(false)
   }
 
-  const handleSfx = async () => {
-    setSfx(prevState => !prevState)
-
-    if (await soundOn()) return AsyncStorage.setItem('sfx', 'false')
+  const handleSfx = () => {
+    if (!sfx) clickSFXForced()
     clickHaptic()
-    clickSFXForced()
-    AsyncStorage.setItem('sfx', 'true')
+    dispatch(setSfx(!sfx))
   }
 
-  const handleMusic = async () => {
+  const handleMusic = () => {
     dispatch(setMusic(!music))
-    if (await musicOn()) return AsyncStorage.setItem('music', 'false')
-    AsyncStorage.setItem('music', 'true')
+  }
+
+  const handleVibrate = () => {
+    dispatch(setVibrate(!vibrate))
   }
 
   useEffect(() => {
     logEvent('view_profile')
-
-    const initSound = async () => {
-      const sfxOn = await AsyncStorage.getItem('sfx')
-      const musicOn = await AsyncStorage.getItem('music')
-
-      sfxOn === 'false' ? setSfx(false) : setSfx(true)
-      musicOn === 'false' ? dispatch(setMusic(false)) : dispatch(setMusic(true))
-    }
-    initSound()
   }, [])
 
   return (
@@ -71,6 +58,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 
           <Button onPress={handleMusic} disabled={loggingOut} style={{ paddingVertical: 12 }}>
             <Title variant="neutral100">Music {music ? 'On' : 'Off'}</Title>
+          </Button>
+
+          <Button onPress={handleVibrate} disabled={loggingOut} style={{ paddingVertical: 12 }}>
+            <Title variant="neutral100">Vibrate {vibrate ? 'On' : 'Off'}</Title>
           </Button>
 
           <Button onPress={handleLogout} disabled={loggingOut} style={{ paddingVertical: 12 }}>

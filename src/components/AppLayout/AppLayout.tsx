@@ -20,15 +20,21 @@ const AppLayout: React.FC<Props> = ({ children }) => {
   const sound = useRef(new Audio.Sound()) // music
   const dispatch = useDispatch()
 
+  const preload = async () => {
+    // Replace with real preloading assets
+    const dummy = new Promise(res => setTimeout(() => res('dummy'), 1000))
+    await dummy
+
+    setIsLoading(false)
+    setTimeout(() => setFinishedLoading(true), 500)
+  }
+
   useEffect(() => {
     if (!__DEV__) notificationInit() // OneSignal
     if (!__DEV__) initAmplitude(amplitudeApiKey) // Amplitude
     const unsubscribe = authListener(dispatch) // Auth
     loadAudio(sound)
-
-    // PRELOAD STUFF HERE
-    setIsLoading(false)
-    setTimeout(() => setFinishedLoading(true), 500)
+    preload()
 
     return () => {
       unsubscribe()

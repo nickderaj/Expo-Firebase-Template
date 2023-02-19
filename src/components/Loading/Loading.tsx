@@ -1,12 +1,42 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import { animateVal } from '@/util/helpers'
+import { genericStyles } from '@/util/styles'
+import LottieView from 'lottie-react-native'
+import React, { useEffect, useRef } from 'react'
+import { Animated, Text } from 'react-native'
 import { styles } from './Loading.styles'
 
-const Loading: React.FC = () => {
+type Props = {
+  isLoading: boolean
+}
+
+const Loading: React.FC<Props> = ({ isLoading }) => {
+  const animation = useRef<LottieView>(null)
+  const finishRef = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    if (!isLoading) animateVal(finishRef, 1, 500)
+  }, [isLoading])
+
   return (
-    <View style={[styles.centered, styles.bgColor]}>
+    <Animated.View
+      style={[
+        genericStyles.fullCenter,
+        styles.bgColor,
+        {
+          opacity: styles.opacityAnim(finishRef),
+          transform: [{ scale: styles.scaleAnim(finishRef) }],
+        },
+      ]}
+    >
+      <LottieView
+        source={require('@/images/animations/cat_loader.json')}
+        autoPlay
+        loop
+        ref={animation}
+        style={styles.animation}
+      />
       <Text style={styles.text}>Loading...</Text>
-    </View>
+    </Animated.View>
   )
 }
 

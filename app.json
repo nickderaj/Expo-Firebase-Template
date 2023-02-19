@@ -42,7 +42,12 @@
       "oneSignalAppId": "<YOUR APP ID HERE>"
     },
     "plugins": [
-      ["onesignal-expo-plugin", { "mode": "development" }],
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ],
       [
         "react-native-fbsdk-next",
         {

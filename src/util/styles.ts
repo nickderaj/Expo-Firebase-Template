@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
 export const deviceHeight = Dimensions.get('window').height
 export const deviceWidth = Dimensions.get('window').width
@@ -20,3 +20,12 @@ export const colors: { [idx: string]: string } = {
   primary900: '#500E10',
   facebook: '#1977f2',
 }
+
+export const genericStyles = StyleSheet.create({
+  fullCenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: deviceWidth,
+    height: deviceHeight,
+  },
+})

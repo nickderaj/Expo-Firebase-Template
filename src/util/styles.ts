@@ -1,8 +1,8 @@
+import { DefaultTheme } from '@react-navigation/native'
 import { Dimensions, StyleSheet } from 'react-native'
 
 export const deviceHeight = Dimensions.get('window').height
 export const deviceWidth = Dimensions.get('window').width
-
 export const colors: { [idx: string]: string } = {
   neutral50: '#fafafa',
   neutral100: '#f5f5f5',
@@ -14,11 +14,24 @@ export const colors: { [idx: string]: string } = {
   neutral700: '#404040',
   neutral800: '#262626',
   neutral900: '#171717',
-  primary50: '#ffe4e5',
-  primary100: '#f59b9e',
-  primary500: '#981d26',
-  primary900: '#500E10',
+  primary50: '#ecfafe',
+  primary100: '#c7eff9',
+  primary500: '#7bbad4',
+  primary900: '#19414e',
   facebook: '#1977f2',
+}
+
+export const appTheme = {
+  ...DefaultTheme,
+  dark: true,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.neutral900,
+    text: colors.neutral900,
+    border: colors.neutral300,
+    card: colors.neutral100,
+    background: colors.neutral100,
+  },
 }
 
 export const genericStyles = StyleSheet.create({

@@ -1,25 +1,17 @@
 import AppLayout from '@/components/AppLayout'
+import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import RootNavigator from '@/navigator/RootNavigator'
 import { persistor, store } from '@/redux/store'
-import { colors } from '@/util/styles'
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { appTheme } from '@/util/styles'
+import Bugsnag from '@bugsnag/expo'
+import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-const theme = {
-  ...DefaultTheme,
-  dark: true,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: colors.neutral900,
-    text: colors.neutral900,
-    border: colors.neutral300,
-    card: colors.neutral100,
-    background: colors.neutral100,
-  },
-}
+if (!__DEV__) Bugsnag.start()
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,15 +21,21 @@ export default function App() {
   })
 
   if (!fontsLoaded) return null
-  return (
+
+  const app = (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={<Loading />}>
         <AppLayout>
-          <NavigationContainer theme={theme}>
+          <NavigationContainer theme={appTheme}>
             <RootNavigator />
           </NavigationContainer>
         </AppLayout>
       </PersistGate>
     </Provider>
   )
+
+  if (__DEV__) return app
+
+  const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)
+  return <ErrorBoundary FallbackComponent={Error}>{app}</ErrorBoundary>
 }

@@ -1,20 +1,19 @@
 import { genericStyles } from '@/util/styles'
-import { reloadAsync } from 'expo-updates'
 import LottieView from 'lottie-react-native'
 import React, { useRef } from 'react'
 import { Text, View } from 'react-native'
 import Button from '../Button'
 import { styles } from './Error.styles'
 
-const Error = () => {
+type Props = {
+  clearError: () => void
+}
+
+const Error: React.FC<Props> = ({ clearError }) => {
   const animation = useRef<LottieView>(null)
 
-  const handlePress = async () => {
-    try {
-      reloadAsync()
-    } catch (error) {
-      console.error('restart app error: ', error)
-    }
+  const handlePress = () => {
+    clearError()
   }
 
   return (
@@ -26,9 +25,9 @@ const Error = () => {
         ref={animation}
         style={styles.animation}
       />
-      <Button name="restart" onPress={handlePress}>
-        <Text>Something went wrong!</Text>
-        <Text>Restart</Text>
+      <Text style={styles.text}>Something went wrong! {':('}</Text>
+      <Button name="restart" onPress={handlePress} style={styles.button}>
+        <Text style={styles.text}>Restart App</Text>
       </Button>
     </View>
   )

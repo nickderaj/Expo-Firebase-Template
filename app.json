@@ -38,8 +38,13 @@
       "backgroundColor": "#171717"
     },
     "extra": {
-      "eas": { "projectId": "2b7d47ec-3fcb-4b7d-a52d-0c33a3997dab" },
-      "oneSignalAppId": "<YOUR APP ID HERE>"
+      "eas": {
+        "projectId": "2b7d47ec-3fcb-4b7d-a52d-0c33a3997dab"
+      },
+      "oneSignalAppId": "<YOUR APP ID HERE>",
+      "bugsnag": {
+        "apiKey": "a958f6a5443ec3eb6cca3584bd6fd304"
+      }
     },
     "plugins": [
       [

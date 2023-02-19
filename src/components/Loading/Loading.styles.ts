@@ -15,7 +15,7 @@ export const styles = {
       maxHeight: 400,
     },
   }),
-  bgColor: [StyleSheet.absoluteFill, { backgroundColor: colors.neutral50 }],
+  bgColor: [StyleSheet.absoluteFill, { backgroundColor: colors.primary50 }],
   opacityAnim: (animRef: Animated.Value) =>
     animRef.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
   scaleAnim: (animRef: Animated.Value) =>

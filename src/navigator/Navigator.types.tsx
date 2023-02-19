@@ -7,5 +7,4 @@ export type RootStackParamList = {
 
 export type TabStackParamList = {
   Home: undefined
-  Profile: undefined
 }

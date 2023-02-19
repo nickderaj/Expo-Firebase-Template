@@ -69,7 +69,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
           </Button>
 
           <Button
-            onPress={() => navigation.replace('Home')}
+            onPress={() => navigation.goBack()}
             disabled={loggingOut}
             style={{ paddingTop: 48 }}
           >

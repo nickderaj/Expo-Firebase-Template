@@ -12,7 +12,6 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 if (!__DEV__) Bugsnag.start()
-
 export default function App() {
   const [fontsLoaded] = useFonts({
     Thin: require('./assets/fonts/RobotoMono-Thin.ttf'),
@@ -24,7 +23,7 @@ export default function App() {
 
   const app = (
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<Loading />}>
+      <PersistGate persistor={persistor} loading={<Loading isLoading={true} />}>
         <AppLayout>
           <NavigationContainer theme={appTheme}>
             <RootNavigator />

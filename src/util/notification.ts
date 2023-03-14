@@ -10,9 +10,6 @@ export const notificationInit = () => {
     // Foreground notifications
     let notification = notificationReceivedEvent.getNotification()
     const data = notification.additionalData
-    console.log('Foreground notification:', notificationReceivedEvent)
-    console.log('Notification: ', notification)
-    console.log('Notification data: ', data)
     notificationReceivedEvent.complete(notification) // Complete with null means don't show a notification.
   })
 

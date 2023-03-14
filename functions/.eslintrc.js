@@ -34,5 +34,6 @@ module.exports = {
     'arrow-parens': 0,
     indent: 0,
     'quote-props': 0,
+    semi: 0,
   },
 };
